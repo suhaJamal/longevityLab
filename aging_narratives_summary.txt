@@ -1,0 +1,20 @@
+================================================================================
+AGING NARRATIVES ANALYSIS - SUMMARY REPORT
+================================================================================
+
+Analysis Period: 2023-01-01 to 2023-12-31
+
+VOLUME ANALYSIS:
+--------------------------------------------------------------------------------
+Limiting narratives:        46,496 stories
+Neutral narratives:        493,499 stories
+Empowering narratives:     197,713 stories
+TOTAL:                     737,708 stories
+
+Narrative Imbalance Ratio: 0.24 : 1
+(For every 1 empowering story, there are 0.2 limiting stories)
+
+ARTICLES COLLECTED:
+--------------------------------------------------------------------------------
+Total articles retrieved:       7,000
+Sample for manual coding:          90

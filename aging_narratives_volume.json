@@ -1,0 +1,63 @@
+{
+  "year": 2023,
+  "narratives": {
+    "limiting": [
+      "aging crisis",
+      "aging population crisis",
+      "elderly burden",
+      "aging tsunami",
+      "silver tsunami",
+      "demographic time bomb"
+    ],
+    "neutral": [
+      "aging population",
+      "older adults",
+      "senior citizens",
+      "elderly population",
+      "population aging"
+    ],
+    "empowering": [
+      "active aging",
+      "successful aging",
+      "healthy aging",
+      "aging well",
+      "productive aging",
+      "elder wisdom"
+    ]
+  },
+  "volume_counts": {
+    "limiting": {
+      "aging crisis": 22735,
+      "aging population crisis": 9544,
+      "elderly burden": 9756,
+      "aging tsunami": 876,
+      "silver tsunami": 1503,
+      "demographic time bomb": 2082,
+      "TOTAL": 46496
+    },
+    "neutral": {
+      "aging population": 56224,
+      "older adults": 164171,
+      "senior citizens": 166572,
+      "elderly population": 50308,
+      "population aging": 56224,
+      "TOTAL": 493499
+    },
+    "empowering": {
+      "active aging": 25577,
+      "successful aging": 15365,
+      "healthy aging": 34913,
+      "aging well": 113941,
+      "productive aging": 3883,
+      "elder wisdom": 4034,
+      "TOTAL": 197713
+    }
+  },
+  "imbalance_summary": {
+    "limiting": 46496,
+    "neutral": 493499,
+    "empowering": 197713,
+    "total": 737708,
+    "imbalance_ratio": 0.23516915933701882
+  }
+}
