@@ -1,0 +1,267 @@
+{
+  "year": 2023,
+  "country": "Canada",
+  "narratives": {
+    "limiting": [
+      "aging crisis",
+      "aging population crisis",
+      "elderly burden",
+      "aging tsunami",
+      "silver tsunami",
+      "demographic time bomb"
+    ],
+    "neutral": [
+      "aging population",
+      "older adults",
+      "senior citizens",
+      "elderly population",
+      "population aging"
+    ],
+    "empowering": [
+      "active aging",
+      "successful aging",
+      "healthy aging",
+      "aging well",
+      "productive aging",
+      "elder wisdom"
+    ]
+  },
+  "provinces": [
+    "Ontario",
+    "British Columbia",
+    "Alberta",
+    "Quebec",
+    "Saskatchewan",
+    "Manitoba",
+    "Nova Scotia",
+    "New Brunswick",
+    "PEI"
+  ],
+  "volume_by_province": {
+    "Ontario": {
+      "limiting": {
+        "aging crisis": 634,
+        "aging population crisis": 240,
+        "elderly burden": 70,
+        "aging tsunami": 16,
+        "silver tsunami": 10,
+        "demographic time bomb": 8
+      },
+      "neutral": {
+        "aging population": 1231,
+        "older adults": 2713,
+        "senior citizens": 2052,
+        "elderly population": 714,
+        "population aging": 1231
+      },
+      "empowering": {
+        "active aging": 287,
+        "successful aging": 209,
+        "healthy aging": 268,
+        "aging well": 1818,
+        "productive aging": 57,
+        "elder wisdom": 70
+      }
+    },
+    "British Columbia": {
+      "limiting": {
+        "aging crisis": 1511,
+        "aging population crisis": 795,
+        "elderly burden": 248,
+        "aging tsunami": 34,
+        "silver tsunami": 84,
+        "demographic time bomb": 1
+      },
+      "neutral": {
+        "aging population": 3543,
+        "older adults": 7994,
+        "senior citizens": 4572,
+        "elderly population": 1688,
+        "population aging": 3543
+      },
+      "empowering": {
+        "active aging": 830,
+        "successful aging": 640,
+        "healthy aging": 940,
+        "aging well": 5864,
+        "productive aging": 102,
+        "elder wisdom": 318
+      }
+    },
+    "Alberta": {
+      "limiting": {
+        "aging crisis": 578,
+        "aging population crisis": 250,
+        "elderly burden": 100,
+        "aging tsunami": 24,
+        "silver tsunami": 47,
+        "demographic time bomb": 3
+      },
+      "neutral": {
+        "aging population": 1216,
+        "older adults": 3396,
+        "senior citizens": 2012,
+        "elderly population": 656,
+        "population aging": 1216
+      },
+      "empowering": {
+        "active aging": 315,
+        "successful aging": 243,
+        "healthy aging": 316,
+        "aging well": 1977,
+        "productive aging": 34,
+        "elder wisdom": 106
+      }
+    },
+    "Quebec": {
+      "limiting": {
+        "aging crisis": 189,
+        "aging population crisis": 56,
+        "elderly burden": 21,
+        "aging tsunami": 3,
+        "silver tsunami": 5,
+        "demographic time bomb": 1
+      },
+      "neutral": {
+        "aging population": 238,
+        "older adults": 437,
+        "senior citizens": 331,
+        "elderly population": 114,
+        "population aging": 238
+      },
+      "empowering": {
+        "active aging": 63,
+        "successful aging": 31,
+        "healthy aging": 59,
+        "aging well": 309,
+        "productive aging": 3,
+        "elder wisdom": 7
+      }
+    },
+    "Saskatchewan": {
+      "limiting": {
+        "aging crisis": 256,
+        "aging population crisis": 63,
+        "elderly burden": 18,
+        "aging tsunami": 5,
+        "silver tsunami": 5,
+        "demographic time bomb": 1
+      },
+      "neutral": {
+        "aging population": 304,
+        "older adults": 653,
+        "senior citizens": 429,
+        "elderly population": 138,
+        "population aging": 304
+      },
+      "empowering": {
+        "active aging": 78,
+        "successful aging": 50,
+        "healthy aging": 67,
+        "aging well": 443,
+        "productive aging": 2,
+        "elder wisdom": 7
+      }
+    },
+    "Manitoba": {
+      "limiting": {
+        "aging crisis": 405,
+        "aging population crisis": 152,
+        "elderly burden": 66,
+        "aging tsunami": 16,
+        "silver tsunami": 25,
+        "demographic time bomb": 6
+      },
+      "neutral": {
+        "aging population": 758,
+        "older adults": 2097,
+        "senior citizens": 1277,
+        "elderly population": 546,
+        "population aging": 758
+      },
+      "empowering": {
+        "active aging": 204,
+        "successful aging": 153,
+        "healthy aging": 179,
+        "aging well": 1271,
+        "productive aging": 26,
+        "elder wisdom": 54
+      }
+    },
+    "Nova Scotia": {
+      "limiting": {
+        "aging crisis": 191,
+        "aging population crisis": 54,
+        "elderly burden": 19,
+        "aging tsunami": 3,
+        "silver tsunami": 5,
+        "demographic time bomb": 2
+      },
+      "neutral": {
+        "aging population": 255,
+        "older adults": 447,
+        "senior citizens": 303,
+        "elderly population": 117,
+        "population aging": 255
+      },
+      "empowering": {
+        "active aging": 64,
+        "successful aging": 36,
+        "healthy aging": 63,
+        "aging well": 333,
+        "productive aging": 4,
+        "elder wisdom": 5
+      }
+    },
+    "New Brunswick": {
+      "limiting": {
+        "aging crisis": 183,
+        "aging population crisis": 49,
+        "elderly burden": 17,
+        "aging tsunami": 3,
+        "silver tsunami": 5,
+        "demographic time bomb": 1
+      },
+      "neutral": {
+        "aging population": 226,
+        "older adults": 412,
+        "senior citizens": 287,
+        "elderly population": 100,
+        "population aging": 226
+      },
+      "empowering": {
+        "active aging": 57,
+        "successful aging": 29,
+        "healthy aging": 55,
+        "aging well": 284,
+        "productive aging": 2,
+        "elder wisdom": 3
+      }
+    },
+    "PEI": {
+      "limiting": {
+        "aging crisis": 9,
+        "aging population crisis": 2,
+        "elderly burden": 1,
+        "aging tsunami": 0,
+        "silver tsunami": 0,
+        "demographic time bomb": 0
+      },
+      "neutral": {
+        "aging population": 21,
+        "older adults": 36,
+        "senior citizens": 15,
+        "elderly population": 8,
+        "population aging": 21
+      },
+      "empowering": {
+        "active aging": 3,
+        "successful aging": 4,
+        "healthy aging": 6,
+        "aging well": 25,
+        "productive aging": 1,
+        "elder wisdom": 0
+      }
+    }
+  }
+}
