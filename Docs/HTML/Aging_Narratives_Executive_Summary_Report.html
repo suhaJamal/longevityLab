@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aging Narratives Executive Summary - 2026</title>
+    <style>
+        @media print {
+            body { margin: 0; }
+            .no-print { display: none; }
+            .page-break { page-break-before: always; }
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #f5f5f5;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            padding: 60px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 50px;
+            padding-bottom: 30px;
+            border-bottom: 3px solid #2c5aa0;
+        }
+        
+        .header h1 {
+            font-size: 32px;
+            color: #2c5aa0;
+            margin-bottom: 10px;
+        }
+        
+        .header .subtitle {
+            font-size: 18px;
+            color: #666;
+            margin-bottom: 5px;
+        }
+        
+        .header .date {
+            font-size: 14px;
+            color: #999;
+        }
+        
+        .alert-box {
+            background: #fff3cd;
+            border-left: 5px solid #ffc107;
+            padding: 20px;
+            margin: 30px 0;
+        }
+        
+        .alert-box.critical {
+            background: #f8d7da;
+            border-left-color: #dc3545;
+        }
+        
+        .alert-box h3 {
+            color: #856404;
+            margin-bottom: 10px;
+            font-size: 18px;
+        }
+        
+        .alert-box.critical h3 {
+            color: #721c24;
+        }
+        
+        .section {
+            margin: 40px 0;
+        }
+        
+        .section h2 {
+            font-size: 24px;
+            color: #2c5aa0;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e0e0e0;
+        }
+        
+        .section h3 {
+            font-size: 18px;
+            color: #555;
+            margin: 20px 0 15px 0;
+        }
+        
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            margin: 20px 0;
+        }
+        
+        .metric-card {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 4px solid #2c5aa0;
+        }
+        
+        .metric-card .label {
+            font-size: 12px;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 5px;
+        }
+        
+        .metric-card .value {
+            font-size: 28px;
+            font-weight: bold;
+            color: #2c5aa0;
+        }
+        
+        .metric-card .subtext {
+            font-size: 13px;
+            color: #888;
+            margin-top: 5px;
+        }
+        
+        .list-item {
+            background: #f8f9fa;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border-left: 4px solid #6c757d;
+        }
+        
+        .list-item.distorted {
+            border-left-color: #dc3545;
+        }
+        
+        .list-item.accurate {
+            border-left-color: #28a745;
+        }
+        
+        .list-item.priority {
+            border-left-color: #ffc107;
+        }
+        
+        .list-item.exemplar {
+            border-left-color: #17a2b8;
+        }
+        
+        .list-item .name {
+            font-weight: bold;
+            font-size: 16px;
+            color: #333;
+            margin-bottom: 5px;
+        }
+        
+        .list-item .details {
+            font-size: 14px;
+            color: #666;
+        }
+        
+        .list-item .metric {
+            font-size: 13px;
+            color: #888;
+            margin-top: 3px;
+        }
+        
+        .badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: bold;
+            text-transform: uppercase;
+            margin-left: 10px;
+        }
+        
+        .badge.severe {
+            background: #dc3545;
+            color: white;
+        }
+        
+        .badge.high {
+            background: #fd7e14;
+            color: white;
+        }
+        
+        .badge.moderate {
+            background: #ffc107;
+            color: #333;
+        }
+        
+        .badge.balanced {
+            background: #28a745;
+            color: white;
+        }
+        
+        .recommendations {
+            background: #e7f3ff;
+            padding: 25px;
+            border-radius: 8px;
+            margin: 30px 0;
+        }
+        
+        .recommendations h3 {
+            color: #2c5aa0;
+            margin-bottom: 15px;
+        }
+        
+        .recommendations ul {
+            list-style: none;
+            padding-left: 0;
+        }
+        
+        .recommendations li {
+            padding: 10px 0;
+            padding-left: 25px;
+            position: relative;
+        }
+        
+        .recommendations li:before {
+            content: "→";
+            position: absolute;
+            left: 0;
+            color: #2c5aa0;
+            font-weight: bold;
+        }
+        
+        .footer {
+            margin-top: 50px;
+            padding-top: 20px;
+            border-top: 2px solid #e0e0e0;
+            text-align: center;
+            color: #999;
+            font-size: 12px;
+        }
+        
+        .download-btn {
+            background: #2c5aa0;
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            margin: 20px 0;
+            display: inline-block;
+        }
+        
+        .download-btn:hover {
+            background: #1e3a6f;
+        }
+        
+        @media print {
+            .download-btn { display: none; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Aging Narratives in Canadian Media</h1>
+            <div class="subtitle">Executive Summary Report</div>
+            <div class="date">Analysis Period: January 2023 - January 2026</div>
+            <div class="date">Report Generated: February 1, 2026</div>
+        </div>
+        
+        <button class="download-btn no-print" onclick="window.print()">📄 Download as PDF</button>
+        
+        <div class="alert-box critical">
+            <h3>⚠️ Critical Finding: Trend WORSENING</h3>
+            <p><strong>Language distortion has increased by 6.8 percentage points over the past 6 months.</strong> This represents a significant deterioration in media representation of aging populations and requires immediate advocacy attention.</p>
+        </div>
+        
+        <div class="section">
+            <h2>Executive Summary</h2>
+            
+            <div class="metrics-grid">
+                <div class="metric-card">
+                    <div class="label">Total Articles Analyzed</div>
+                    <div class="value">24,285</div>
+                    <div class="subtext">Across 358 media outlets</div>
+                </div>
+                
+                <div class="metric-card">
+                    <div class="label">Overall Mismatch Rate</div>
+                    <div class="value">46.5%</div>
+                    <div class="subtext">53.5% accuracy rate</div>
+                </div>
+                
+                <div class="metric-card">
+                    <div class="label">Phrases Monitored</div>
+                    <div class="value">17</div>
+                    <div class="subtext">3 categories tracked</div>
+                </div>
+                
+                <div class="metric-card">
+                    <div class="label">Average Sentiment</div>
+                    <div class="value">-0.045</div>
+                    <div class="subtext">Slightly negative overall</div>
+                </div>
+            </div>
+            
+            <p style="margin-top: 20px; line-height: 1.8;">
+                This report analyzes <strong>24,285 articles</strong> from <strong>358 Canadian media outlets</strong> 
+                published between January 2023 and January 2026. The analysis tracks <strong>17 aging-related phrases</strong> 
+                across empowering, neutral, and limiting categories to assess media representation accuracy.
+            </p>
+            
+            <p style="margin-top: 15px; line-height: 1.8;">
+                <strong>Key Finding:</strong> Nearly half (46.5%) of articles misrepresent aging narratives, 
+                with a concerning upward trend showing a 6.8 percentage point increase in distortion over the past 6 months.
+            </p>
+        </div>
+        
+        <div class="page-break"></div>
+        
+        <div class="section">
+            <h2>Most Distorted Phrases</h2>
+            <h3>Top 5 Requiring Immediate Attention</h3>
+            
+            <div class="list-item distorted">
+                <div class="name">1. Silver Tsunami <span class="badge severe">98.0% Mismatch</span></div>
+                <div class="details">101 articles analyzed</div>
+                <div class="metric">Category: Limiting | This phrase perpetuates crisis narratives</div>
+            </div>
+            
+            <div class="list-item distorted">
+                <div class="name">2. Productive Aging <span class="badge severe">90.6% Mismatch</span></div>
+                <div class="details">159 articles analyzed</div>
+                <div class="metric">Category: Empowering | Misused in limiting contexts</div>
+            </div>
+            
+            <div class="list-item distorted">
+                <div class="name">3. Aging Well <span class="badge severe">79.8% Mismatch</span></div>
+                <div class="details">2,216 articles analyzed</div>
+                <div class="metric">Category: Empowering | High volume, high distortion</div>
+            </div>
+            
+            <div class="list-item distorted">
+                <div class="name">4. Aging Population Crisis <span class="badge severe">73.8% Mismatch</span></div>
+                <div class="details">374 articles analyzed</div>
+                <div class="metric">Category: Limiting | Reinforces negative stereotypes</div>
+            </div>
+            
+            <div class="list-item distorted">
+                <div class="name">5. Elderly Burden <span class="badge high">64.1% Mismatch</span></div>
+                <div class="details">426 articles analyzed</div>
+                <div class="metric">Category: Limiting | Dehumanizing language</div>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2>Most Accurate Phrases</h2>
+            <h3>Top 5 Positive Examples</h3>
+            
+            <div class="list-item accurate">
+                <div class="name">1. Elder Wisdom <span class="badge balanced">66.2% Accuracy</span></div>
+                <div class="details">293 articles analyzed</div>
+                <div class="metric">Category: Empowering | Consistently used appropriately</div>
+            </div>
+            
+            <div class="list-item accurate">
+                <div class="name">2. Elderly Population <span class="badge balanced">66.5% Accuracy</span></div>
+                <div class="details">2,803 articles analyzed</div>
+                <div class="metric">Category: Neutral | High volume, good accuracy</div>
+            </div>
+            
+            <div class="list-item accurate">
+                <div class="name">3. Senior Citizens <span class="badge balanced">64.2% Accuracy</span></div>
+                <div class="details">4,365 articles analyzed</div>
+                <div class="metric">Category: Neutral | Most analyzed phrase</div>
+            </div>
+            
+            <div class="list-item accurate">
+                <div class="name">4. Older Adults <span class="badge balanced">63.7% Accuracy</span></div>
+                <div class="details">4,266 articles analyzed</div>
+                <div class="metric">Category: Neutral | Preferred neutral term</div>
+            </div>
+            
+            <div class="list-item accurate">
+                <div class="name">5. Aging Population <span class="badge balanced">58.1% Accuracy</span></div>
+                <div class="details">2,729 articles analyzed</div>
+                <div class="metric">Category: Neutral | Baseline neutral phrase</div>
+            </div>
+        </div>
+        
+        <div class="page-break"></div>
+        
+        <div class="section">
+            <h2>Priority Outlets for Advocacy Engagement</h2>
+            <h3>Top 10 Outlets with High Volume & High Distortion</h3>
+            
+            <div class="list-item priority">
+                <div class="name">1. airdrietoday.com <span class="badge severe">Severe Distortion</span></div>
+                <div class="details">161 articles | 70.8% mismatch rate</div>
+            </div>
+            
+            <div class="list-item priority">
+                <div class="name">2. mountainviewtoday.ca <span class="badge severe">Severe Distortion</span></div>
+                <div class="details">326 articles | 66.6% mismatch rate</div>
+            </div>
+            
+            <div class="list-item priority">
+                <div class="name">3. thefreepress.ca <span class="badge severe">Severe Distortion</span></div>
+                <div class="details">51 articles | 70.6% mismatch rate</div>
+            </div>
+            
+            <div class="list-item priority">
+                <div class="name">4. aldergrovestar.com <span class="badge high">High Distortion</span></div>
+                <div class="details">70 articles | 57.1% mismatch rate</div>
+            </div>
+            
+            <div class="list-item priority">
+                <div class="name">5. lethbridgeherald.com <span class="badge high">High Distortion</span></div>
+                <div class="details">76 articles | 56.6% mismatch rate</div>
+            </div>
+            
+            <div class="list-item priority">
+                <div class="name">6. kelownadailycourier.ca <span class="badge high">High Distortion</span></div>
+                <div class="details">118 articles | 55.9% mismatch rate</div>
+            </div>
+            
+            <div class="list-item priority">
+                <div class="name">7. mapleridgenews.com <span class="badge high">High Distortion</span></div>
+                <div class="details">52 articles | 55.8% mismatch rate</div>
+            </div>
+            
+            <div class="list-item priority">
+                <div class="name">8. townandcountrytoday.com <span class="badge high">High Distortion</span></div>
+                <div class="details">682 articles | 55.6% mismatch rate</div>
+            </div>
+            
+            <div class="list-item priority">
+                <div class="name">9. lakelandtoday.ca <span class="badge high">High Distortion</span></div>
+                <div class="details">697 articles | 55.1% mismatch rate</div>
+            </div>
+            
+            <div class="list-item priority">
+                <div class="name">10. nationalpost.com <span class="badge high">High Distortion</span></div>
+                <div class="details">202 articles | 55.0% mismatch rate</div>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2>Exemplar Outlets</h2>
+            <h3>Top 5 Best Practices for Positive Engagement</h3>
+            
+            <div class="list-item exemplar">
+                <div class="name">1. canindia.com <span class="badge balanced">83.5% Accuracy</span></div>
+                <div class="details">266 articles | Model for accurate representation</div>
+            </div>
+            
+            <div class="list-item exemplar">
+                <div class="name">2. kelownacapnews.com <span class="badge balanced">71.7% Accuracy</span></div>
+                <div class="details">53 articles | Consistent quality</div>
+            </div>
+            
+            <div class="list-item exemplar">
+                <div class="name">3. delta-optimist.com <span class="badge balanced">70.4% Accuracy</span></div>
+                <div class="details">233 articles | High volume, high accuracy</div>
+            </div>
+            
+            <div class="list-item exemplar">
+                <div class="name">4. wltribune.com <span class="badge balanced">66.1% Accuracy</span></div>
+                <div class="details">56 articles | Above-average performance</div>
+            </div>
+            
+            <div class="list-item exemplar">
+                <div class="name">5. discoverairdrie.com <span class="badge balanced">63.8% Accuracy</span></div>
+                <div class="details">58 articles | Solid baseline</div>
+            </div>
+        </div>
+        
+        <div class="page-break"></div>
+        
+        <div class="recommendations">
+            <h3>Recommendations for Advocacy Action</h3>
+            <ul>
+                <li><strong>Immediate Priority:</strong> Address the worsening trend with targeted campaigns focusing on the top 3 distorted phrases: "silver tsunami," "productive aging," and "aging well"</li>
+                
+                <li><strong>Outlet Engagement:</strong> Initiate direct conversations with the 10 priority outlets, starting with airdrietoday.com, mountainviewtoday.ca, and thefreepress.ca</li>
+                
+                <li><strong>Best Practice Sharing:</strong> Partner with exemplar outlets (canindia.com, kelownacapnews.com) to develop and share editorial guidelines</li>
+                
+                <li><strong>Media Training:</strong> Develop workshops for journalists on accurate aging narratives, using the 5 most accurate phrases as positive examples</li>
+                
+                <li><strong>Monitoring Expansion:</strong> Continue weekly data collection to track intervention effectiveness and identify emerging problematic phrases</li>
+                
+                <li><strong>Public Awareness:</strong> Launch public education campaign highlighting the impact of language distortion on aging populations</li>
+                
+                <li><strong>Policy Advocacy:</strong> Use this data to support policy recommendations for media standards and journalism ethics guidelines</li>
+            </ul>
+        </div>
+        
+        <div class="section">
+            <h2>Methodology</h2>
+            <p style="line-height: 1.8;">
+                This analysis uses the Media Cloud API to collect articles from Canadian media outlets across 
+                4 provinces (Ontario, British Columbia, Alberta, Quebec). Articles are analyzed using sentiment 
+                analysis and phrase classification algorithms to determine whether aging-related language is used 
+                in empowering, neutral, or limiting contexts.
+            </p>
+            <p style="margin-top: 15px; line-height: 1.8;">
+                <strong>Data Sources:</strong> Media Cloud API, Snowflake data warehouse<br>
+                <strong>Analysis Tools:</strong> DuckDB, sentiment analysis models<br>
+                <strong>Update Frequency:</strong> Weekly (every Monday 9AM UTC)<br>
+                <strong>Report Generation:</strong> Automated weekly email reports (every Friday 9AM UTC)
+            </p>
+        </div>
+        
+        <div class="footer">
+            <p>Smart Diversity Institute | Aging Narratives Research Project</p>
+            <p>For questions or advocacy partnerships, contact: suha@smartdiversity.ca</p>
+            <p style="margin-top: 10px;">This report is generated automatically from the longevityLab data pipeline.</p>
+        </div>
+    </div>
+</body>
+</html>

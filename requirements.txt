@@ -1,0 +1,21 @@
+# Data processing and analysis
+pandas
+numpy
+
+# Media Cloud API
+mediacloud
+
+# Web scraping
+requests
+beautifulsoup4
+newspaper3k
+cloudscraper
+
+# Browser automation (for bypassing anti-bot protection)
+selenium
+webdriver-manager
+selenium-stealth
+
+# Visualization
+matplotlib
+seaborn

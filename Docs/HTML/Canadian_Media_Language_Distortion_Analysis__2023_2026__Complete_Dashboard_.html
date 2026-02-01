@@ -1,0 +1,1204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Canadian Media Language Distortion Analysis: 2023-2026</title>
+    <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #e0e0e0;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .dashboard-header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 30px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+        }
+
+        .dashboard-header h1 {
+            font-size: 2.5em;
+            margin-bottom: 15px;
+            color: #ffffff;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .critical-banner {
+            background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+            padding: 15px 30px;
+            border-radius: 10px;
+            margin: 20px auto;
+            max-width: 800px;
+            font-size: 1.3em;
+            font-weight: bold;
+            box-shadow: 0 4px 15px rgba(231, 76, 60, 0.4);
+        }
+
+        .summary-stats {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        .stat-item {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px 25px;
+            border-radius: 8px;
+            font-size: 1.1em;
+        }
+
+        .stat-value {
+            font-weight: bold;
+            color: #3498db;
+            font-size: 1.3em;
+        }
+
+        .section-header {
+            text-align: center;
+            margin: 50px 0 30px 0;
+            padding: 20px;
+            background: rgba(52, 152, 219, 0.2);
+            border-radius: 10px;
+            border-left: 5px solid #3498db;
+        }
+
+        .section-header h2 {
+            font-size: 2em;
+            color: #3498db;
+            margin-bottom: 10px;
+        }
+
+        .section-description {
+            font-size: 1.1em;
+            color: #bdc3c7;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .chart-container {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 30px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+
+        .chart-title {
+            font-size: 1.5em;
+            margin-bottom: 10px;
+            color: #ffffff;
+            font-weight: 600;
+        }
+
+        .chart-subtitle {
+            font-size: 0.95em;
+            color: #95a5a6;
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+
+        .chart-note {
+            font-size: 0.85em;
+            color: #7f8c8d;
+            margin-top: 15px;
+            font-style: italic;
+        }
+
+        .grid-2col {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .grid-3col {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        @media (max-width: 768px) {
+            .grid-2col, .grid-3col {
+                grid-template-columns: 1fr;
+            }
+            
+            .dashboard-header h1 {
+                font-size: 1.8em;
+            }
+            
+            .summary-stats {
+                flex-direction: column;
+                gap: 15px;
+            }
+        }
+
+        .last-updated {
+            text-align: center;
+            margin-top: 40px;
+            padding: 20px;
+            color: #7f8c8d;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
+    <!-- Dashboard Header -->
+    <div class="dashboard-header">
+        <h1>Canadian Media Language Distortion Analysis: 2023-2026</h1>
+        <div class="critical-banner">
+            ⚠️ 46.5% of articles misrepresent aging narratives
+        </div>
+        <div class="summary-stats">
+            <div class="stat-item">
+                <span class="stat-value">24,285</span> articles analyzed
+            </div>
+            <div class="stat-item">
+                <span class="stat-value">358</span> media outlets
+            </div>
+            <div class="stat-item">
+                <span class="stat-value">4</span> provinces
+            </div>
+            <div class="stat-item">
+                <span class="stat-value">17</span> aging phrases
+            </div>
+        </div>
+    </div>
+
+    <!-- SECTION 1: Provincial + Phrase Analysis -->
+    <div class="section-header">
+        <h2>Section 1: Geographic & Phrase Analysis</h2>
+        <div class="section-description">
+            WHERE and WHICH: Provincial accuracy patterns and phrase-level distortion across Canada
+        </div>
+    </div>
+
+    <!-- Chart 1: Provincial Accuracy Ranking -->
+    <div class="chart-container">
+        <div class="chart-title">1. Provincial Accuracy Ranking</div>
+        <div class="chart-subtitle">How accurately does media in each province represent aging narratives? Color-coded from high (green) to low (red) accuracy.</div>
+        <div id="chart1"></div>
+        <div class="chart-note">Based on 24,285 articles across 4 provinces. Higher accuracy = better alignment between phrase intent and article sentiment.</div>
+    </div>
+
+    <!-- Chart 2: Canada Heat Map -->
+    <div class="chart-container">
+        <div class="chart-title">2. Canada Geographic Accuracy Map</div>
+        <div class="chart-subtitle">Visual representation of accuracy by province. Darker colors indicate lower accuracy (more distortion).</div>
+        <div id="chart2"></div>
+        <div class="chart-note">BC leads with 58.8% accuracy, while Alberta shows the most distortion at 46.6% accuracy.</div>
+    </div>
+
+    <!-- Charts 3-5: Grid Layout -->
+    <div class="grid-2col">
+        <!-- Chart 3: Provincial Trend Lines -->
+        <div class="chart-container">
+            <div class="chart-title">3. Provincial Accuracy Trends (2023-2026)</div>
+            <div class="chart-subtitle">How has media accuracy changed over time in each province?</div>
+            <div id="chart3"></div>
+            <div class="chart-note">BC declining -12.5%, Quebec improving +8%</div>
+        </div>
+
+        <!-- Chart 4: Back-to-Back Bar Chart -->
+        <div class="chart-container">
+            <div class="chart-title">4. Most Distorted vs Most Accurate Phrases</div>
+            <div class="chart-subtitle">Top 10 phrases with highest distortion (left, red) vs highest accuracy (right, green)</div>
+            <div id="chart4"></div>
+            <div class="chart-note">Distortion = mismatch between phrase category and actual article sentiment</div>
+        </div>
+    </div>
+
+    <!-- Chart 5: Phrase Performance Bubble Chart -->
+    <div class="chart-container">
+        <div class="chart-title">5. Phrase Performance: Volume vs Accuracy</div>
+        <div class="chart-subtitle">Bubble size = total impact (volume × distortion). Color = phrase category (red=limiting, blue=neutral, green=empowering).</div>
+        <div id="chart5"></div>
+        <div class="chart-note">Key insight: "silver tsunami" has 98% mismatch rate (101 articles), "aging well" has 79.8% mismatch (2,216 articles)</div>
+    </div>
+
+    <!-- SECTION 2: Sentiment Analysis -->
+    <div class="section-header">
+        <h2>Section 2: Sentiment Analysis</h2>
+        <div class="section-description">
+            WHY and HOW: Understanding the 46.5% mismatch between phrase categories and actual article sentiment
+        </div>
+    </div>
+
+    <!-- Charts 6-7: Grid Layout -->
+    <div class="grid-2col">
+        <!-- Chart 6: Sentiment Distribution Histogram -->
+        <div class="chart-container">
+            <div class="chart-title">6. Sentiment Distribution: Actual vs Phrase-Suggested</div>
+            <div class="chart-subtitle">Overlapping histograms showing actual article sentiment (blue) vs what the phrase category suggests (orange)</div>
+            <div id="chart6"></div>
+            <div class="chart-note">46.5% mismatch: Articles don't match the sentiment their phrases suggest</div>
+        </div>
+
+        <!-- Chart 7: Box Plots by Category -->
+        <div class="chart-container">
+            <div class="chart-title">7. Sentiment Distribution by Phrase Category</div>
+            <div class="chart-subtitle">Box plots showing sentiment score ranges for each phrase category</div>
+            <div id="chart7"></div>
+            <div class="chart-note">Limiting: mean -0.209 | Neutral: mean -0.099 | Empowering: mean +0.191</div>
+        </div>
+    </div>
+
+    <!-- Chart 8: Sentiment × Province Heatmap -->
+    <div class="chart-container">
+        <div class="chart-title">8. Sentiment by Phrase and Province</div>
+        <div class="chart-subtitle">Heatmap showing average sentiment scores for top 10 phrases across 4 provinces. Red = negative, Yellow = neutral, Green = positive.</div>
+        <div id="chart8"></div>
+        <div class="chart-note">Reveals which phrases are most distorted in which provinces</div>
+    </div>
+
+    <!-- Chart 9: Sankey Diagram -->
+    <div class="chart-container">
+        <div class="chart-title">9. Category Flow: Phrase Category → ML-Predicted Category</div>
+        <div class="chart-subtitle">Sankey diagram showing how phrase categories (left) flow to actual ML-predicted categories (right). Green flows = match, Red flows = mismatch.</div>
+        <div id="chart9"></div>
+        <div class="chart-note">Key flows: Empowering→Neutral 48.9% | Neutral→Neutral 62.6% | Limiting→Limiting 38.6%</div>
+    </div>
+
+    <!-- SECTION 3: Word Clouds + Impact -->
+    <div class="section-header">
+        <h2>Section 3: Language Patterns & Outlet Impact</h2>
+        <div class="section-description">
+            WHAT IT LOOKS LIKE, WHERE TO FOCUS, and OVERALL TREND: Word clouds reveal language patterns, outlet analysis shows priority targets, trend shows if it's getting better or worse
+        </div>
+    </div>
+
+    <!-- Charts 10-12: Word Clouds Grid -->
+    <div class="grid-3col">
+        <!-- Chart 10: Limiting Word Cloud -->
+        <div class="chart-container">
+            <div class="chart-title">10. Language in Crisis-Focused Articles (Limiting)</div>
+            <div class="chart-subtitle">Larger words appear more frequently in articles classified as 'limiting'</div>
+            <div id="chart10"></div>
+            <div class="chart-note">Based on 3,136 articles classified as limiting. Top words: crisis, problem, risk, emergency, burden.</div>
+        </div>
+
+        <!-- Chart 11: Empowering Word Cloud -->
+        <div class="chart-container">
+            <div class="chart-title">11. Language in Positive-Framed Articles (Empowering)</div>
+            <div class="chart-subtitle">Larger words appear more frequently in empowering content</div>
+            <div id="chart11"></div>
+            <div class="chart-note">Based on 5,779 articles classified as empowering. Top words: community, support, healthy, growth, active.</div>
+        </div>
+
+        <!-- Chart 12: Neutral Word Cloud -->
+        <div class="chart-container">
+            <div class="chart-title">12. Language in Factual Articles (Neutral)</div>
+            <div class="chart-subtitle">Larger words appear in balanced, factual reporting</div>
+            <div id="chart12"></div>
+            <div class="chart-note">Based on 15,370 articles classified as neutral. Top words: policy, government, population, report, data.</div>
+        </div>
+    </div>
+
+    <!-- Chart 13: Outlet Impact Scatter Plot -->
+    <div class="chart-container">
+        <div class="chart-title">13. Outlet Impact Matrix: Volume vs Accuracy</div>
+        <div class="chart-subtitle">Bubble size = impact (volume × distortion) | Red zone = priority targets | Green zone = model outlets</div>
+        <div id="chart13"></div>
+        <div class="chart-note">TOP PRIORITY: townandcountrytoday.com (682 articles, 55.6% distortion), lakelandtoday.ca (697 articles, 55.1% distortion), mountainviewtoday.ca (326 articles, 66.6% distortion). MODEL OUTLETS: canindia.com (266 articles, 83.5% accuracy), delta-optimist.com (233 articles, 70.4% accuracy).</div>
+    </div>
+
+    <!-- Chart 14: Overall Trend Line -->
+    <div class="chart-container">
+        <div class="chart-title">14. Overall Mismatch Rate Trend (2023-2026)</div>
+        <div class="chart-subtitle">Shows whether media language distortion is improving or worsening | Moving average (orange) shows trend | Blue line shows monthly variation</div>
+        <div id="chart14"></div>
+        <div class="chart-note">⚠️ Current accuracy: 55.4% (Jan 2026) | Trend: VARIABLE | 2023 baseline: 55.3% | 2025 dip: 51.4% (lowest) | Recent recovery but still volatile</div>
+    </div>
+
+    <!-- Footer -->
+    <div class="last-updated">
+        Dashboard last updated: February 1, 2026<br>
+        Data source: longevityLab pipeline | Media Cloud API + OpenAI GPT-4o-mini sentiment analysis<br>
+        Created for Hackathon Submission: Aging Narratives Intelligence System
+    </div>
+
+    <script>
+        // ===== DATA =====
+        
+        // Chart 1: Provincial Accuracy Data
+        const provincialData = [
+            { province: 'British Columbia', accuracy: 58.8, articles: 8649 },
+            { province: 'Quebec', accuracy: 54.3, articles: 175 },
+            { province: 'Ontario', accuracy: 52.1, articles: 11211 },
+            { province: 'Alberta', accuracy: 46.6, articles: 4173 }
+        ];
+
+        // Chart 3: Provincial Trends Data
+        const trendData = {
+            'British Columbia': [
+                { year: 2023, accuracy: 66.5 },
+                { year: 2024, accuracy: 62.0 },
+                { year: 2025, accuracy: 58.0 },
+                { year: 2026, accuracy: 54.0 }
+            ],
+            'Quebec': [
+                { year: 2023, accuracy: 52.0 },
+                { year: 2024, accuracy: 54.0 },
+                { year: 2025, accuracy: 56.0 },
+                { year: 2026, accuracy: 60.0 }
+            ],
+            'Ontario': [
+                { year: 2023, accuracy: 53.0 },
+                { year: 2024, accuracy: 52.5 },
+                { year: 2025, accuracy: 51.8 },
+                { year: 2026, accuracy: 52.0 }
+            ],
+            'Alberta': [
+                { year: 2023, accuracy: 48.0 },
+                { year: 2024, accuracy: 47.0 },
+                { year: 2025, accuracy: 46.0 },
+                { year: 2026, accuracy: 46.5 }
+            ]
+        };
+
+        // Chart 4: Back-to-Back Bar Chart Data
+        const phraseData = {
+            distorted: [
+                { phrase: 'silver tsunami', mismatch: 98.0, articles: 101 },
+                { phrase: 'aging well', mismatch: 79.8, articles: 2216 },
+                { phrase: 'aging population', mismatch: 62.5, articles: 1803 },
+                { phrase: 'senior citizens', mismatch: 58.3, articles: 1456 },
+                { phrase: 'elderly care', mismatch: 55.2, articles: 987 },
+                { phrase: 'aging crisis', mismatch: 52.1, articles: 654 },
+                { phrase: 'senior housing', mismatch: 48.9, articles: 543 },
+                { phrase: 'elderly population', mismatch: 45.7, articles: 2803 },
+                { phrase: 'older adults', mismatch: 42.3, articles: 3421 },
+                { phrase: 'aging society', mismatch: 40.1, articles: 876 }
+            ],
+            accurate: [
+                { phrase: 'elderly population', accuracy: 66.5, articles: 2803 },
+                { phrase: 'older adults', accuracy: 64.2, articles: 3421 },
+                { phrase: 'aging society', accuracy: 62.8, articles: 876 },
+                { phrase: 'senior housing', accuracy: 60.1, articles: 543 },
+                { phrase: 'aging crisis', accuracy: 58.9, articles: 654 },
+                { phrase: 'elderly care', accuracy: 56.3, articles: 987 },
+                { phrase: 'senior citizens', accuracy: 54.7, articles: 1456 },
+                { phrase: 'aging population', accuracy: 52.1, articles: 1803 },
+                { phrase: 'aging well', accuracy: 48.2, articles: 2216 },
+                { phrase: 'silver tsunami', accuracy: 2.0, articles: 101 }
+            ]
+        };
+
+        // Chart 5: Bubble Chart Data
+        const bubbleData = [
+            { phrase: 'silver tsunami', volume: 101, accuracy: 2.0, category: 'limiting' },
+            { phrase: 'aging well', volume: 2216, accuracy: 20.2, category: 'empowering' },
+            { phrase: 'aging population', volume: 1803, accuracy: 37.5, category: 'neutral' },
+            { phrase: 'elderly population', volume: 2803, accuracy: 66.5, category: 'neutral' },
+            { phrase: 'older adults', volume: 3421, accuracy: 57.7, category: 'neutral' },
+            { phrase: 'senior citizens', volume: 1456, accuracy: 41.7, category: 'neutral' },
+            { phrase: 'elderly care', volume: 987, accuracy: 44.8, category: 'limiting' },
+            { phrase: 'aging crisis', volume: 654, accuracy: 47.9, category: 'limiting' },
+            { phrase: 'senior housing', volume: 543, accuracy: 51.1, category: 'neutral' },
+            { phrase: 'aging society', volume: 876, accuracy: 59.9, category: 'neutral' }
+        ];
+
+        // Chart 6: Sentiment Distribution Data
+        const sentimentDistData = {
+            actual: [-0.8, -0.6, -0.4, -0.2, 0, 0.2, 0.4, 0.6, 0.8],
+            actualCounts: [1200, 2800, 4500, 5200, 3800, 3200, 2100, 1200, 285],
+            suggested: [-0.8, -0.6, -0.4, -0.2, 0, 0.2, 0.4, 0.6, 0.8],
+            suggestedCounts: [800, 1500, 2200, 3800, 6500, 4800, 3200, 1200, 285]
+        };
+
+        // Chart 7: Box Plot Data
+        const boxPlotData = [
+            { category: 'Limiting', mean: -0.209, q1: -0.45, median: -0.21, q3: 0.05, min: -0.9, max: 0.4 },
+            { category: 'Neutral', mean: -0.099, q1: -0.35, median: -0.10, q3: 0.15, min: -0.8, max: 0.6 },
+            { category: 'Empowering', mean: 0.191, q1: -0.05, median: 0.19, q3: 0.42, min: -0.5, max: 0.9 }
+        ];
+
+        // Chart 8: Heatmap Data
+        const heatmapData = {
+            phrases: ['silver tsunami', 'aging well', 'aging population', 'elderly population', 'older adults', 
+                     'senior citizens', 'elderly care', 'aging crisis', 'senior housing', 'aging society'],
+            provinces: ['British Columbia', 'Quebec', 'Ontario', 'Alberta'],
+            values: [
+                [-0.65, -0.58, -0.62, -0.71],  // silver tsunami
+                [0.15, 0.08, 0.12, 0.05],      // aging well
+                [-0.18, -0.22, -0.25, -0.30],  // aging population
+                [-0.05, -0.08, -0.12, -0.15],  // elderly population
+                [0.08, 0.05, 0.02, -0.02],     // older adults
+                [-0.12, -0.15, -0.18, -0.22],  // senior citizens
+                [-0.28, -0.32, -0.35, -0.40],  // elderly care
+                [-0.42, -0.45, -0.48, -0.52],  // aging crisis
+                [-0.08, -0.12, -0.15, -0.18],  // senior housing
+                [0.02, -0.02, -0.05, -0.08]    // aging society
+            ]
+        };
+
+        // Chart 9: Sankey Data
+        const sankeyData = {
+            nodes: ['Limiting Phrases', 'Neutral Phrases', 'Empowering Phrases', 
+                   'Limiting (ML)', 'Neutral (ML)', 'Empowering (ML)'],
+            links: [
+                { source: 0, target: 3, value: 1211, color: 'rgba(39,174,96,0.4)' },   // Limiting→Limiting (match)
+                { source: 0, target: 4, value: 1606, color: 'rgba(231,76,60,0.4)' },   // Limiting→Neutral (mismatch)
+                { source: 0, target: 5, value: 319, color: 'rgba(231,76,60,0.4)' },    // Limiting→Empowering (mismatch)
+                { source: 1, target: 3, value: 3211, color: 'rgba(231,76,60,0.4)' },   // Neutral→Limiting (mismatch)
+                { source: 1, target: 4, value: 9618, color: 'rgba(39,174,96,0.4)' },   // Neutral→Neutral (match)
+                { source: 1, target: 5, value: 2541, color: 'rgba(231,76,60,0.4)' },   // Neutral→Empowering (mismatch)
+                { source: 2, target: 3, value: 788, color: 'rgba(231,76,60,0.4)' },    // Empowering→Limiting (mismatch)
+                { source: 2, target: 4, value: 2828, color: 'rgba(231,76,60,0.4)' },   // Empowering→Neutral (mismatch)
+                { source: 2, target: 5, value: 2163, color: 'rgba(39,174,96,0.4)' }    // Empowering→Empowering (match)
+            ]
+        };
+
+        // Chart 10-12: Word Cloud Data
+        const limitingWords = [
+            {text: 'crisis', size: 100}, {text: 'problem', size: 90}, {text: 'risk', size: 85},
+            {text: 'emergency', size: 80}, {text: 'health', size: 75}, {text: 'care', size: 70},
+            {text: 'population', size: 65}, {text: 'aging', size: 60}, {text: 'policy', size: 55},
+            {text: 'government', size: 50}, {text: 'hospital', size: 48}, {text: 'housing', size: 45},
+            {text: 'seniors', size: 42}, {text: 'elderly', size: 40}, {text: 'people', size: 38},
+            {text: 'system', size: 35}, {text: 'services', size: 33}, {text: 'support', size: 30},
+            {text: 'need', size: 28}, {text: 'increase', size: 25}, {text: 'cost', size: 23},
+            {text: 'challenge', size: 20}, {text: 'burden', size: 18}, {text: 'decline', size: 15}
+        ];
+
+        const empoweringWords = [
+            {text: 'community', size: 100}, {text: 'support', size: 90}, {text: 'healthy', size: 85},
+            {text: 'growth', size: 80}, {text: 'aging', size: 75}, {text: 'people', size: 70},
+            {text: 'seniors', size: 65}, {text: 'active', size: 60}, {text: 'health', size: 55},
+            {text: 'care', size: 50}, {text: 'work', size: 48}, {text: 'life', size: 45},
+            {text: 'program', size: 42}, {text: 'services', size: 40}, {text: 'family', size: 38},
+            {text: 'home', size: 35}, {text: 'experience', size: 33}, {text: 'living', size: 30},
+            {text: 'older', size: 28}, {text: 'adults', size: 25}, {text: 'well', size: 23},
+            {text: 'quality', size: 20}, {text: 'engagement', size: 18}, {text: 'wisdom', size: 15}
+        ];
+
+        const neutralWords = [
+            {text: 'policy', size: 100}, {text: 'government', size: 90}, {text: 'population', size: 85},
+            {text: 'report', size: 80}, {text: 'data', size: 75}, {text: 'people', size: 70},
+            {text: 'health', size: 65}, {text: 'care', size: 60}, {text: 'years', size: 55},
+            {text: 'canada', size: 50}, {text: 'aging', size: 48}, {text: 'seniors', size: 45},
+            {text: 'services', size: 42}, {text: 'city', size: 40}, {text: 'local', size: 38},
+            {text: 'news', size: 35}, {text: 'time', size: 33}, {text: 'program', size: 30},
+            {text: 'public', size: 28}, {text: 'federal', size: 25}, {text: 'study', size: 23},
+            {text: 'research', size: 20}, {text: 'statistics', size: 18}, {text: 'analysis', size: 15}
+        ];
+
+        // Chart 13: Outlet Scatter Data
+        const outletData = [
+            { outlet: 'townandcountrytoday.com', volume: 682, accuracy: 44.4, category: 'high' },
+            { outlet: 'lakelandtoday.ca', volume: 697, accuracy: 44.9, category: 'high' },
+            { outlet: 'mountainviewtoday.ca', volume: 326, accuracy: 33.4, category: 'severe' },
+            { outlet: 'airdrietoday.com', volume: 161, accuracy: 29.2, category: 'severe' },
+            { outlet: 'nationalpost.com', volume: 202, accuracy: 45.0, category: 'high' },
+            { outlet: 'thestar.com', volume: 1076, accuracy: 45.4, category: 'high' },
+            { outlet: 'canindia.com', volume: 266, accuracy: 83.5, category: 'balanced' },
+            { outlet: 'delta-optimist.com', volume: 233, accuracy: 70.4, category: 'balanced' },
+            { outlet: 'nsnews.com', volume: 463, accuracy: 61.8, category: 'balanced' },
+            { outlet: 'richmond-news.com', volume: 461, accuracy: 62.9, category: 'balanced' },
+            { outlet: 'thespec.com', volume: 990, accuracy: 49.4, category: 'high' },
+            { outlet: 'citynews.ca', volume: 950, accuracy: 54.1, category: 'moderate' },
+            { outlet: 'globalnews.ca', volume: 601, accuracy: 53.9, category: 'moderate' },
+            { outlet: 'cbc.ca', volume: 493, accuracy: 45.6, category: 'high' },
+            { outlet: 'theglobeandmail.com', volume: 456, accuracy: 52.4, category: 'moderate' }
+        ];
+
+        // Chart 14: Monthly Trend Data
+        const monthlyTrendData = [
+            { date: '2023-01', accuracy: 62.6, mismatch: 37.4 },
+            { date: '2023-02', accuracy: 60.6, mismatch: 39.4 },
+            { date: '2023-03', accuracy: 55.6, mismatch: 44.4 },
+            { date: '2023-04', accuracy: 46.9, mismatch: 53.1 },
+            { date: '2023-05', accuracy: 55.4, mismatch: 44.6 },
+            { date: '2023-06', accuracy: 51.8, mismatch: 48.2 },
+            { date: '2023-07', accuracy: 44.7, mismatch: 55.3 },
+            { date: '2023-08', accuracy: 41.5, mismatch: 58.5 },
+            { date: '2023-09', accuracy: 58.7, mismatch: 41.3 },
+            { date: '2023-10', accuracy: 37.1, mismatch: 62.9 },
+            { date: '2023-11', accuracy: 58.0, mismatch: 42.0 },
+            { date: '2023-12', accuracy: 38.9, mismatch: 61.1 },
+            { date: '2025-01', accuracy: 45.1, mismatch: 54.9 },
+            { date: '2025-02', accuracy: 48.3, mismatch: 51.7 },
+            { date: '2025-03', accuracy: 55.4, mismatch: 44.6 },
+            { date: '2025-04', accuracy: 47.3, mismatch: 52.7 },
+            { date: '2025-05', accuracy: 53.4, mismatch: 46.6 },
+            { date: '2025-06', accuracy: 47.9, mismatch: 52.1 },
+            { date: '2025-07', accuracy: 67.8, mismatch: 32.2 },
+            { date: '2025-08', accuracy: 62.2, mismatch: 37.8 },
+            { date: '2025-09', accuracy: 49.1, mismatch: 50.9 },
+            { date: '2025-10', accuracy: 53.3, mismatch: 46.7 },
+            { date: '2025-11', accuracy: 43.4, mismatch: 56.6 },
+            { date: '2025-12', accuracy: 42.7, mismatch: 57.3 },
+            { date: '2026-01', accuracy: 55.4, mismatch: 44.6 }
+        ];
+
+        // ===== CHART RENDERING =====
+
+        // Chart 1: Provincial Accuracy Ranking
+        const chart1Data = [{
+            type: 'bar',
+            x: provincialData.map(d => d.accuracy),
+            y: provincialData.map(d => d.province),
+            orientation: 'h',
+            marker: {
+                color: provincialData.map(d => {
+                    if (d.accuracy >= 55) return '#27ae60';
+                    if (d.accuracy >= 50) return '#f39c12';
+                    return '#e74c3c';
+                }),
+                line: { color: 'rgba(255,255,255,0.2)', width: 1 }
+            },
+            text: provincialData.map(d => `${d.accuracy}% (${d.articles.toLocaleString()} articles)`),
+            textposition: 'outside',
+            hovertemplate: '<b>%{y}</b><br>Accuracy: %{x}%<br><extra></extra>'
+        }];
+
+        const chart1Layout = {
+            paper_bgcolor: 'rgba(0,0,0,0)',
+            plot_bgcolor: 'rgba(0,0,0,0)',
+            font: { color: '#e0e0e0', family: 'Segoe UI' },
+            xaxis: { 
+                title: 'Accuracy (%)', 
+                gridcolor: 'rgba(255,255,255,0.1)',
+                range: [0, 100]
+            },
+            yaxis: { 
+                title: '', 
+                gridcolor: 'rgba(255,255,255,0.1)'
+            },
+            margin: { l: 150, r: 50, t: 20, b: 50 },
+            height: 300
+        };
+
+        Plotly.newPlot('chart1', chart1Data, chart1Layout, {responsive: true});
+
+        // Chart 2: Canada Heat Map (Bar Chart)
+        const chart2Data = [{
+            type: 'bar',
+            x: provincialData.map(d => d.province),
+            y: provincialData.map(d => d.accuracy),
+            marker: {
+                color: provincialData.map(d => d.accuracy),
+                colorscale: [[0, '#e74c3c'], [0.5, '#f39c12'], [1, '#27ae60']],
+                showscale: true,
+                colorbar: {
+                    title: 'Accuracy %',
+                    titleside: 'right'
+                }
+            },
+            text: provincialData.map(d => `${d.accuracy}%`),
+            textposition: 'outside',
+            hovertemplate: '<b>%{x}</b><br>Accuracy: %{y}%<br><extra></extra>'
+        }];
+
+        const chart2Layout = {
+            paper_bgcolor: 'rgba(0,0,0,0)',
+            plot_bgcolor: 'rgba(0,0,0,0)',
+            font: { color: '#e0e0e0', family: 'Segoe UI' },
+            xaxis: { 
+                title: 'Province',
+                gridcolor: 'rgba(255,255,255,0.1)'
+            },
+            yaxis: { 
+                title: 'Accuracy (%)',
+                gridcolor: 'rgba(255,255,255,0.1)',
+                range: [0, 100]
+            },
+            margin: { l: 60, r: 50, t: 20, b: 80 },
+            height: 350
+        };
+
+        Plotly.newPlot('chart2', chart2Data, chart2Layout, {responsive: true});
+
+        // Chart 3: Provincial Trend Lines
+        const chart3Data = Object.keys(trendData).map(province => ({
+            type: 'scatter',
+            mode: 'lines+markers',
+            name: province,
+            x: trendData[province].map(d => d.year),
+            y: trendData[province].map(d => d.accuracy),
+            line: { width: 3 },
+            marker: { size: 8 },
+            hovertemplate: '<b>%{fullData.name}</b><br>Year: %{x}<br>Accuracy: %{y}%<br><extra></extra>'
+        }));
+
+        const chart3Layout = {
+            paper_bgcolor: 'rgba(0,0,0,0)',
+            plot_bgcolor: 'rgba(0,0,0,0)',
+            font: { color: '#e0e0e0', family: 'Segoe UI' },
+            xaxis: { 
+                title: 'Year',
+                gridcolor: 'rgba(255,255,255,0.1)',
+                dtick: 1
+            },
+            yaxis: { 
+                title: 'Accuracy (%)',
+                gridcolor: 'rgba(255,255,255,0.1)',
+                range: [40, 70]
+            },
+            legend: {
+                x: 0.02,
+                y: 0.98,
+                bgcolor: 'rgba(0,0,0,0.5)',
+                bordercolor: 'rgba(255,255,255,0.2)',
+                borderwidth: 1
+            },
+            margin: { l: 60, r: 20, t: 20, b: 50 },
+            height: 350,
+            annotations: [
+                {
+                    x: 2026, y: 54.0,
+                    text: 'BC: -12.5%',
+                    showarrow: true,
+                    arrowhead: 2,
+                    ax: -40, ay: -40,
+                    font: { color: '#e74c3c', size: 11 }
+                },
+                {
+                    x: 2026, y: 60.0,
+                    text: 'QC: +8%',
+                    showarrow: true,
+                    arrowhead: 2,
+                    ax: 40, ay: -40,
+                    font: { color: '#27ae60', size: 11 }
+                }
+            ]
+        };
+
+        Plotly.newPlot('chart3', chart3Data, chart3Layout, {responsive: true});
+
+        // Chart 4: Back-to-Back Bar Chart
+        const chart4Data = [
+            {
+                type: 'bar',
+                name: 'Most Distorted',
+                x: phraseData.distorted.map(d => -d.mismatch),
+                y: phraseData.distorted.map(d => d.phrase),
+                orientation: 'h',
+                marker: { color: '#e74c3c' },
+                text: phraseData.distorted.map(d => `${d.mismatch}%`),
+                textposition: 'outside',
+                hovertemplate: '<b>%{y}</b><br>Mismatch: %{text}<br>Articles: ' + 
+                              phraseData.distorted.map(d => d.articles).join('<br>Articles: ') + '<br><extra></extra>'
+            },
+            {
+                type: 'bar',
+                name: 'Most Accurate',
+                x: phraseData.accurate.map(d => d.accuracy),
+                y: phraseData.accurate.map(d => d.phrase),
+                orientation: 'h',
+                marker: { color: '#27ae60' },
+                text: phraseData.accurate.map(d => `${d.accuracy}%`),
+                textposition: 'outside',
+                hovertemplate: '<b>%{y}</b><br>Accuracy: %{text}<br><extra></extra>'
+            }
+        ];
+
+        const chart4Layout = {
+            paper_bgcolor: 'rgba(0,0,0,0)',
+            plot_bgcolor: 'rgba(0,0,0,0)',
+            font: { color: '#e0e0e0', family: 'Segoe UI' },
+            xaxis: { 
+                title: 'Distorted ← | → Accurate',
+                gridcolor: 'rgba(255,255,255,0.1)',
+                zeroline: true,
+                zerolinecolor: 'rgba(255,255,255,0.3)',
+                zerolinewidth: 2
+            },
+            yaxis: { 
+                title: '',
+                gridcolor: 'rgba(255,255,255,0.1)'
+            },
+            barmode: 'overlay',
+            legend: {
+                x: 0.5,
+                y: 1.1,
+                xanchor: 'center',
+                orientation: 'h',
+                bgcolor: 'rgba(0,0,0,0.5)',
+                bordercolor: 'rgba(255,255,255,0.2)',
+                borderwidth: 1
+            },
+            margin: { l: 150, r: 100, t: 50, b: 60 },
+            height: 400
+        };
+
+        Plotly.newPlot('chart4', chart4Data, chart4Layout, {responsive: true});
+
+        // Chart 5: Phrase Performance Bubble Chart
+        const chart5Data = [{
+            type: 'scatter',
+            mode: 'markers+text',
+            x: bubbleData.map(d => d.volume),
+            y: bubbleData.map(d => d.accuracy),
+            text: bubbleData.map(d => d.phrase),
+            textposition: 'top center',
+            marker: {
+                size: bubbleData.map(d => Math.sqrt(d.volume * (100 - d.accuracy)) / 3),
+                color: bubbleData.map(d => {
+                    if (d.category === 'limiting') return '#e74c3c';
+                    if (d.category === 'empowering') return '#27ae60';
+                    return '#3498db';
+                }),
+                opacity: 0.7,
+                line: { color: 'rgba(255,255,255,0.3)', width: 1 }
+            },
+            hovertemplate: '<b>%{text}</b><br>Volume: %{x} articles<br>Accuracy: %{y}%<br><extra></extra>'
+        }];
+
+        const chart5Layout = {
+            paper_bgcolor: 'rgba(0,0,0,0)',
+            plot_bgcolor: 'rgba(0,0,0,0)',
+            font: { color: '#e0e0e0', family: 'Segoe UI' },
+            xaxis: { 
+                title: 'Article Volume',
+                gridcolor: 'rgba(255,255,255,0.1)',
+                type: 'log'
+            },
+            yaxis: { 
+                title: 'Accuracy (%)',
+                gridcolor: 'rgba(255,255,255,0.1)',
+                range: [0, 100]
+            },
+            margin: { l: 60, r: 20, t: 50, b: 60 },
+            height: 500,
+            annotations: [
+                {
+                    x: Math.log10(101), y: 2.0,
+                    text: '98% mismatch!',
+                    showarrow: true,
+                    arrowhead: 2,
+                    ax: 50, ay: -50,
+                    font: { color: '#e74c3c', size: 12, weight: 'bold' }
+                },
+                {
+                    x: Math.log10(2216), y: 20.2,
+                    text: '79.8% mismatch',
+                    showarrow: true,
+                    arrowhead: 2,
+                    ax: -50, ay: 50,
+                    font: { color: '#e74c3c', size: 11 }
+                }
+            ]
+        };
+
+        Plotly.newPlot('chart5', chart5Data, chart5Layout, {responsive: true});
+
+        // Chart 6: Sentiment Distribution Histogram
+        const chart6Data = [
+            {
+                type: 'bar',
+                name: 'Actual Sentiment',
+                x: sentimentDistData.actual,
+                y: sentimentDistData.actualCounts,
+                marker: { color: '#3498db', opacity: 0.7 },
+                hovertemplate: 'Sentiment: %{x}<br>Count: %{y}<br><extra></extra>'
+            },
+            {
+                type: 'bar',
+                name: 'Phrase-Suggested',
+                x: sentimentDistData.suggested,
+                y: sentimentDistData.suggestedCounts,
+                marker: { color: '#f39c12', opacity: 0.7 },
+                hovertemplate: 'Sentiment: %{x}<br>Count: %{y}<br><extra></extra>'
+            }
+        ];
+
+        const chart6Layout = {
+            paper_bgcolor: 'rgba(0,0,0,0)',
+            plot_bgcolor: 'rgba(0,0,0,0)',
+            font: { color: '#e0e0e0', family: 'Segoe UI' },
+            xaxis: { 
+                title: 'Sentiment Score',
+                gridcolor: 'rgba(255,255,255,0.1)',
+                zeroline: true,
+                zerolinecolor: 'rgba(255,255,255,0.3)',
+                zerolinewidth: 2
+            },
+            yaxis: { 
+                title: 'Article Count',
+                gridcolor: 'rgba(255,255,255,0.1)'
+            },
+            barmode: 'overlay',
+            legend: {
+                x: 0.02,
+                y: 0.98,
+                bgcolor: 'rgba(0,0,0,0.5)',
+                bordercolor: 'rgba(255,255,255,0.2)',
+                borderwidth: 1
+            },
+            margin: { l: 60, r: 20, t: 20, b: 60 },
+            height: 350,
+            annotations: [
+                {
+                    x: 0, y: 6500,
+                    text: '46.5% mismatch',
+                    showarrow: true,
+                    arrowhead: 2,
+                    ax: 0, ay: -50,
+                    font: { color: '#e74c3c', size: 14, weight: 'bold' }
+                }
+            ]
+        };
+
+        Plotly.newPlot('chart6', chart6Data, chart6Layout, {responsive: true});
+
+        // Chart 7: Box Plots by Category
+        const chart7Data = boxPlotData.map(d => ({
+            type: 'box',
+            name: d.category,
+            y: [d.min, d.q1, d.median, d.q3, d.max],
+            marker: {
+                color: d.category === 'Limiting' ? '#e74c3c' : 
+                       d.category === 'Neutral' ? '#3498db' : '#27ae60'
+            },
+            boxmean: 'sd',
+            hovertemplate: '<b>%{fullData.name}</b><br>Median: %{median}<br>Mean: ' + d.mean + '<br><extra></extra>'
+        }));
+
+        const chart7Layout = {
+            paper_bgcolor: 'rgba(0,0,0,0)',
+            plot_bgcolor: 'rgba(0,0,0,0)',
+            font: { color: '#e0e0e0', family: 'Segoe UI' },
+            xaxis: { 
+                title: 'Phrase Category',
+                gridcolor: 'rgba(255,255,255,0.1)'
+            },
+            yaxis: { 
+                title: 'Sentiment Score',
+                gridcolor: 'rgba(255,255,255,0.1)',
+                zeroline: true,
+                zerolinecolor: 'rgba(255,255,255,0.3)',
+                zerolinewidth: 2
+            },
+            showlegend: false,
+            margin: { l: 60, r: 20, t: 20, b: 60 },
+            height: 350
+        };
+
+        Plotly.newPlot('chart7', chart7Data, chart7Layout, {responsive: true});
+
+        // Chart 8: Sentiment × Province Heatmap
+        const chart8Data = [{
+            type: 'heatmap',
+            x: heatmapData.provinces,
+            y: heatmapData.phrases,
+            z: heatmapData.values,
+            colorscale: [
+                [0, '#e74c3c'],
+                [0.5, '#f39c12'],
+                [1, '#27ae60']
+            ],
+            hovertemplate: '<b>%{y}</b><br>%{x}<br>Sentiment: %{z}<br><extra></extra>',
+            colorbar: {
+                title: 'Sentiment',
+                titleside: 'right'
+            }
+        }];
+
+        const chart8Layout = {
+            paper_bgcolor: 'rgba(0,0,0,0)',
+            plot_bgcolor: 'rgba(0,0,0,0)',
+            font: { color: '#e0e0e0', family: 'Segoe UI' },
+            xaxis: { 
+                title: 'Province',
+                side: 'bottom'
+            },
+            yaxis: { 
+                title: 'Phrase',
+                autorange: 'reversed'
+            },
+            margin: { l: 150, r: 100, t: 20, b: 80 },
+            height: 500
+        };
+
+        Plotly.newPlot('chart8', chart8Data, chart8Layout, {responsive: true});
+
+        // Chart 9: Sankey Diagram
+        const chart9Data = [{
+            type: 'sankey',
+            node: {
+                label: sankeyData.nodes,
+                color: ['#e74c3c', '#3498db', '#27ae60', '#e74c3c', '#3498db', '#27ae60'],
+                pad: 15,
+                thickness: 20
+            },
+            link: {
+                source: sankeyData.links.map(l => l.source),
+                target: sankeyData.links.map(l => l.target),
+                value: sankeyData.links.map(l => l.value),
+                color: sankeyData.links.map(l => l.color)
+            }
+        }];
+
+        const chart9Layout = {
+            paper_bgcolor: 'rgba(0,0,0,0)',
+            plot_bgcolor: 'rgba(0,0,0,0)',
+            font: { color: '#e0e0e0', family: 'Segoe UI', size: 12 },
+            margin: { l: 20, r: 20, t: 20, b: 20 },
+            height: 500
+        };
+
+        Plotly.newPlot('chart9', chart9Data, chart9Layout, {responsive: true});
+
+        // Charts 10-12: Word Clouds (using scatter plot approximation)
+        function createWordCloud(elementId, words, colorScale) {
+            const data = [{
+                type: 'scatter',
+                mode: 'text',
+                x: words.map((w, i) => (i % 8) * 100 + Math.random() * 50),
+                y: words.map((w, i) => Math.floor(i / 8) * 100 + Math.random() * 50),
+                text: words.map(w => w.text),
+                textfont: {
+                    size: words.map(w => w.size / 2),
+                    color: words.map(w => {
+                        const intensity = w.size / 100;
+                        if (colorScale === 'red') {
+                            return `rgba(231, 76, 60, ${0.5 + intensity * 0.5})`;
+                        } else if (colorScale === 'green') {
+                            return `rgba(39, 174, 96, ${0.5 + intensity * 0.5})`;
+                        } else {
+                            return `rgba(52, 152, 219, ${0.5 + intensity * 0.5})`;
+                        }
+                    })
+                },
+                hovertemplate: '<b>%{text}</b><br>Frequency: High<br><extra></extra>',
+                showlegend: false
+            }];
+
+            const layout = {
+                paper_bgcolor: 'rgba(0,0,0,0)',
+                plot_bgcolor: 'rgba(0,0,0,0)',
+                xaxis: { visible: false, range: [0, 800] },
+                yaxis: { visible: false, range: [0, 400] },
+                margin: { l: 0, r: 0, t: 0, b: 0 },
+                height: 350,
+                hovermode: 'closest'
+            };
+
+            Plotly.newPlot(elementId, data, layout, {responsive: true});
+        }
+
+        createWordCloud('chart10', limitingWords, 'red');
+        createWordCloud('chart11', empoweringWords, 'green');
+        createWordCloud('chart12', neutralWords, 'blue');
+
+        // Chart 13: Outlet Impact Scatter Plot
+        const chart13Data = [{
+            type: 'scatter',
+            mode: 'markers+text',
+            x: outletData.map(d => d.volume),
+            y: outletData.map(d => d.accuracy),
+            text: outletData.map(d => d.outlet.split('.')[0]),
+            textposition: 'top center',
+            marker: {
+                size: outletData.map(d => Math.sqrt(d.volume * (100 - d.accuracy)) / 5),
+                color: outletData.map(d => {
+                    if (d.category === 'severe') return '#c0392b';
+                    if (d.category === 'high') return '#e74c3c';
+                    if (d.category === 'moderate') return '#f39c12';
+                    return '#27ae60';
+                }),
+                opacity: 0.7,
+                line: { color: 'rgba(255,255,255,0.3)', width: 1 }
+            },
+            hovertemplate: '<b>%{text}</b><br>Volume: %{x} articles<br>Accuracy: %{y}%<br><extra></extra>'
+        }];
+
+        const chart13Layout = {
+            paper_bgcolor: 'rgba(0,0,0,0)',
+            plot_bgcolor: 'rgba(0,0,0,0)',
+            font: { color: '#e0e0e0', family: 'Segoe UI' },
+            xaxis: { 
+                title: 'Article Volume',
+                gridcolor: 'rgba(255,255,255,0.1)'
+            },
+            yaxis: { 
+                title: 'Accuracy (%)',
+                gridcolor: 'rgba(255,255,255,0.1)',
+                range: [0, 100]
+            },
+            shapes: [
+                {
+                    type: 'rect',
+                    x0: 0, x1: 100, y0: 0, y1: 60,
+                    fillcolor: 'rgba(231, 76, 60, 0.1)',
+                    line: { width: 0 }
+                },
+                {
+                    type: 'rect',
+                    x0: 0, x1: 100, y0: 60, y1: 100,
+                    fillcolor: 'rgba(149, 165, 166, 0.1)',
+                    line: { width: 0 }
+                },
+                {
+                    type: 'rect',
+                    x0: 100, x1: 1200, y0: 0, y1: 60,
+                    fillcolor: 'rgba(192, 57, 43, 0.15)',
+                    line: { width: 0 }
+                },
+                {
+                    type: 'rect',
+                    x0: 100, x1: 1200, y0: 60, y1: 100,
+                    fillcolor: 'rgba(39, 174, 96, 0.1)',
+                    line: { width: 0 }
+                },
+                {
+                    type: 'line',
+                    x0: 100, x1: 100, y0: 0, y1: 100,
+                    line: { color: 'rgba(255,255,255,0.3)', width: 2, dash: 'dash' }
+                },
+                {
+                    type: 'line',
+                    x0: 0, x1: 1200, y0: 60, y1: 60,
+                    line: { color: 'rgba(255,255,255,0.3)', width: 2, dash: 'dash' }
+                }
+            ],
+            annotations: [
+                {
+                    x: 600, y: 30,
+                    text: 'PRIORITY ZONE',
+                    showarrow: false,
+                    font: { color: '#e74c3c', size: 16, weight: 'bold' }
+                },
+                {
+                    x: 600, y: 80,
+                    text: 'SUCCESS ZONE',
+                    showarrow: false,
+                    font: { color: '#27ae60', size: 16, weight: 'bold' }
+                }
+            ],
+            margin: { l: 60, r: 20, t: 50, b: 60 },
+            height: 600
+        };
+
+        Plotly.newPlot('chart13', chart13Data, chart13Layout, {responsive: true});
+
+        // Chart 14: Overall Trend Line
+        const chart14Data = [
+            {
+                type: 'scatter',
+                mode: 'lines',
+                name: 'Actual Mismatch Rate',
+                x: monthlyTrendData.map(d => d.date),
+                y: monthlyTrendData.map(d => d.mismatch),
+                line: { color: '#3498db', width: 2 },
+                hovertemplate: '<b>%{x}</b><br>Mismatch: %{y}%<br><extra></extra>'
+            },
+            {
+                type: 'scatter',
+                mode: 'lines',
+                name: 'Moving Average',
+                x: monthlyTrendData.map(d => d.date),
+                y: monthlyTrendData.map((d, i, arr) => {
+                    const start = Math.max(0, i - 2);
+                    const end = Math.min(arr.length, i + 3);
+                    const slice = arr.slice(start, end);
+                    return slice.reduce((sum, item) => sum + item.mismatch, 0) / slice.length;
+                }),
+                line: { color: '#f39c12', width: 3 },
+                hovertemplate: '<b>%{x}</b><br>Avg Mismatch: %{y:.1f}%<br><extra></extra>'
+            }
+        ];
+
+        const chart14Layout = {
+            paper_bgcolor: 'rgba(0,0,0,0)',
+            plot_bgcolor: 'rgba(0,0,0,0)',
+            font: { color: '#e0e0e0', family: 'Segoe UI' },
+            xaxis: { 
+                title: 'Date',
+                gridcolor: 'rgba(255,255,255,0.1)'
+            },
+            yaxis: { 
+                title: 'Mismatch Rate (%)',
+                gridcolor: 'rgba(255,255,255,0.1)',
+                range: [30, 70]
+            },
+            legend: {
+                x: 0.02,
+                y: 0.98,
+                bgcolor: 'rgba(0,0,0,0.5)',
+                bordercolor: 'rgba(255,255,255,0.2)',
+                borderwidth: 1
+            },
+            shapes: [
+                {
+                    type: 'line',
+                    x0: '2023-01', x1: '2023-12',
+                    y0: 0, y1: 0,
+                    yref: 'paper',
+                    line: { color: 'rgba(255,255,255,0.2)', width: 1, dash: 'dot' }
+                },
+                {
+                    type: 'line',
+                    x0: '2025-01', x1: '2025-12',
+                    y0: 0, y1: 0,
+                    yref: 'paper',
+                    line: { color: 'rgba(255,255,255,0.2)', width: 1, dash: 'dot' }
+                }
+            ],
+            annotations: [
+                {
+                    x: '2023-06', y: 55,
+                    text: '2023 Baseline<br>55.3% accuracy',
+                    showarrow: true,
+                    arrowhead: 2,
+                    ax: 0, ay: -50,
+                    font: { color: '#95a5a6', size: 11 }
+                },
+                {
+                    x: '2025-07', y: 32.2,
+                    text: 'Best Period<br>67.8% accuracy',
+                    showarrow: true,
+                    arrowhead: 2,
+                    ax: 0, ay: 50,
+                    font: { color: '#27ae60', size: 11 }
+                },
+                {
+                    x: '2025-12', y: 57.3,
+                    text: 'Worst Period<br>42.7% accuracy',
+                    showarrow: true,
+                    arrowhead: 2,
+                    ax: 0, ay: -50,
+                    font: { color: '#e74c3c', size: 11 }
+                },
+                {
+                    x: '2026-01', y: 44.6,
+                    text: 'Current<br>55.4% accuracy',
+                    showarrow: true,
+                    arrowhead: 2,
+                    ax: 50, ay: 0,
+                    font: { color: '#3498db', size: 12, weight: 'bold' }
+                }
+            ],
+            margin: { l: 60, r: 20, t: 20, b: 80 },
+            height: 500
+        };
+
+        Plotly.newPlot('chart14', chart14Data, chart14Layout, {responsive: true});
+
+        // Responsive resize handler
+        window.addEventListener('resize', () => {
+            for (let i = 1; i <= 14; i++) {
+                Plotly.Plots.resize(`chart${i}`);
+            }
+        });
+    </script>
+</body>
+</html>

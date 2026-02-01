@@ -14,8 +14,8 @@ import time
 # ============================================================================
 
 API_KEY = '9e047cbfc9e1cd397857c21eb52c78902fc5f181'
-START_DATE = date(2023, 1, 1)
-END_DATE = date(2023, 12, 31)
+START_DATE = date(2025, 1, 1)
+END_DATE = date(2026, 1, 30)
 
 # Narrative phrases to search
 NARRATIVES = {
@@ -49,13 +49,17 @@ PROVINCES = {
     'Ontario': 38379397,
     'British Columbia': 38379407,
     'Alberta': 38379399,
-    'Quebec': 38379395,
+    'Quebec': 38379395
+
+}
+'''
     'Saskatchewan': 38379406,
     'Manitoba': 38379405,
     'Nova Scotia': 38379416,
     'New Brunswick': 38379411,
     'PEI': 38379414
-}
+
+'''
 
 
 def get_province_volume(mc, province_name, collection_id):
@@ -106,7 +110,7 @@ def main():
     }
     
     # Save to JSON
-    with open('data/aging_narratives_volume.json', 'w') as f:
+    with open('newData/aging_narratives_volume.json', 'w') as f:
         json.dump(output, f, indent=2)
     
     print("\n" + "="*60)

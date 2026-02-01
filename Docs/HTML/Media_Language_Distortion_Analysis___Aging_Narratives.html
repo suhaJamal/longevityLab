@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Media Language Distortion Analysis - Aging Narratives in Canadian Media</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            color: #333;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            color: #667eea;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            color: #666;
+            font-size: 1.1em;
+            line-height: 1.6;
+        }
+        
+        .key-finding {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        
+        .key-finding h2 {
+            font-size: 1.8em;
+            margin-bottom: 10px;
+        }
+        
+        .key-finding p {
+            font-size: 1.2em;
+            line-height: 1.6;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .stat-card {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        
+        .stat-card h3 {
+            color: #666;
+            font-size: 0.9em;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+        }
+        
+        .stat-card .value {
+            font-size: 3em;
+            font-weight: bold;
+            color: #667eea;
+            margin-bottom: 5px;
+        }
+        
+        .stat-card .label {
+            color: #999;
+            font-size: 0.9em;
+        }
+        
+        .section {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        
+        .section h2 {
+            color: #667eea;
+            font-size: 1.8em;
+            margin-bottom: 20px;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 10px;
+        }
+        
+        .phrase-list {
+            display: grid;
+            gap: 15px;
+        }
+        
+        .phrase-item {
+            display: grid;
+            grid-template-columns: 1fr auto auto;
+            gap: 15px;
+            align-items: center;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+        }
+        
+        .phrase-item.low-accuracy {
+            border-left-color: #f5576c;
+            background: #fff5f7;
+        }
+        
+        .phrase-item.medium-accuracy {
+            border-left-color: #ffa726;
+            background: #fff8f0;
+        }
+        
+        .phrase-item.high-accuracy {
+            border-left-color: #66bb6a;
+            background: #f1f8f4;
+        }
+        
+        .phrase-name {
+            font-weight: 600;
+            color: #333;
+        }
+        
+        .phrase-category {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: 600;
+        }
+        
+        .category-empowering {
+            background: #e8f5e9;
+            color: #2e7d32;
+        }
+        
+        .category-limiting {
+            background: #ffebee;
+            color: #c62828;
+        }
+        
+        .category-neutral {
+            background: #e3f2fd;
+            color: #1565c0;
+        }
+        
+        .accuracy-bar {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            min-width: 200px;
+        }
+        
+        .bar-container {
+            flex: 1;
+            height: 24px;
+            background: #e0e0e0;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        
+        .bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            transition: width 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding-right: 8px;
+            color: white;
+            font-size: 0.85em;
+            font-weight: 600;
+        }
+        
+        .mismatch-grid {
+            display: grid;
+            gap: 15px;
+        }
+        
+        .mismatch-item {
+            display: grid;
+            grid-template-columns: 1fr auto auto;
+            gap: 15px;
+            align-items: center;
+            padding: 15px;
+            background: #fff5f7;
+            border-radius: 8px;
+            border-left: 4px solid #f5576c;
+        }
+        
+        .mismatch-pattern {
+            font-weight: 600;
+            color: #333;
+        }
+        
+        .arrow {
+            color: #f5576c;
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+        
+        .mismatch-count {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #f5576c;
+        }
+        
+        .province-grid {
+            display: grid;
+            gap: 15px;
+        }
+        
+        .province-item {
+            display: grid;
+            grid-template-columns: 150px 1fr auto;
+            gap: 15px;
+            align-items: center;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+        
+        .province-name {
+            font-weight: 600;
+            color: #333;
+        }
+        
+        .insight-box {
+            background: #e8f4fd;
+            border-left: 4px solid #2196f3;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+        
+        .insight-box h3 {
+            color: #1976d2;
+            margin-bottom: 10px;
+        }
+        
+        .insight-box ul {
+            list-style-position: inside;
+            color: #555;
+            line-height: 1.8;
+        }
+        
+        .insight-box li {
+            margin-bottom: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🔍 Media Language Distortion Analysis</h1>
+            <p>Revealing How Canadian Media Language About Aging Misaligns With Actual Article Sentiment</p>
+            <p style="margin-top: 10px; font-size: 0.95em; color: #999;">Analysis of 24,285 Canadian articles (2023-2026)</p>
+        </div>
+        
+        <div class="key-finding">
+            <h2>🚨 Critical Discovery</h2>
+            <p><strong>46.5% of articles use phrases that don't match their actual sentiment</strong> — revealing systematic language distortion in aging narratives across Canadian media.</p>
+        </div>
+        
+        <div class="stats-grid">
+            <div class="stat-card">
+                <h3>Total Articles</h3>
+                <div class="value">24,285</div>
+                <div class="label">Analyzed</div>
+            </div>
+            <div class="stat-card">
+                <h3>Match Rate</h3>
+                <div class="value">53.5%</div>
+                <div class="label">Phrase aligns with sentiment</div>
+            </div>
+            <div class="stat-card">
+                <h3>Mismatches</h3>
+                <div class="value">11,293</div>
+                <div class="label">Language distortion detected</div>
+            </div>
+            <div class="stat-card">
+                <h3>Avg Sentiment</h3>
+                <div class="value">-0.045</div>
+                <div class="label">Slightly negative overall</div>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2>📊 Phrase Accuracy Analysis</h2>
+            <p style="margin-bottom: 20px; color: #666;">Which phrases are most misused? Sorted by accuracy (lowest to highest):</p>
+            
+            <div class="phrase-list">
+                <div class="phrase-item low-accuracy">
+                    <div>
+                        <div class="phrase-name">"silver tsunami"</div>
+                        <span class="phrase-category category-limiting">limiting</span>
+                    </div>
+                    <div class="accuracy-bar">
+                        <div class="bar-container">
+                            <div class="bar-fill" style="width: 2%;">2.0%</div>
+                        </div>
+                    </div>
+                    <div style="text-align: right; color: #666;">
+                        <div style="font-size: 0.9em;">2 / 101 articles</div>
+                        <div style="font-size: 0.85em; color: #999;">Avg sentiment: +0.133</div>
+                    </div>
+                </div>
+                
+                <div class="phrase-item low-accuracy">
+                    <div>
+                        <div class="phrase-name">"productive aging"</div>
+                        <span class="phrase-category category-empowering">empowering</span>
+                    </div>
+                    <div class="accuracy-bar">
+                        <div class="bar-container">
+                            <div class="bar-fill" style="width: 9.4%;">9.4%</div>
+                        </div>
+                    </div>
+                    <div style="text-align: right; color: #666;">
+                        <div style="font-size: 0.9em;">15 / 159 articles</div>
+                        <div style="font-size: 0.85em; color: #999;">Avg sentiment: +0.025</div>
+                    </div>
+                </div>
+                
+                <div class="phrase-item low-accuracy">
+                    <div>
+                        <div class="phrase-name">"aging well"</div>
+                        <span class="phrase-category category-empowering">empowering</span>
+                    </div>
+                    <div class="accuracy-bar">
+                        <div class="bar-container">
+                            <div class="bar-fill" style="width: 20.2%;">20.2%</div>
+                        </div>
+                    </div>
+                    <div style="text-align: right; color: #666;">
+                        <div style="font-size: 0.9em;">447 / 2,216 articles</div>
+                        <div style="font-size: 0.85em; color: #999;">Avg sentiment: +0.051</div>
+                    </div>
+                </div>
+                
+                <div class="phrase-item low-accuracy">
+                    <div>
+                        <div class="phrase-name">"aging tsunami"</div>
+                        <span class="phrase-category category-limiting">limiting</span>
+                    </div>
+                    <div class="accuracy-bar">
+                        <div class="bar-container">
+                            <div class="bar-fill" style="width: 22%;">22.0%</div>
+                        </div>
+                    </div>
+                    <div style="text-align: right; color: #666;">
+                        <div style="font-size: 0.9em;">13 / 59 articles</div>
+                        <div style="font-size: 0.85em; color: #999;">Avg sentiment: -0.185</div>
+                    </div>
+                </div>
+                
+                <div class="phrase-item medium-accuracy">
+                    <div>
+                        <div class="phrase-name">"aging population crisis"</div>
+                        <span class="phrase-category category-limiting">limiting</span>
+                    </div>
+                    <div class="accuracy-bar">
+                        <div class="bar-container">
+                            <div class="bar-fill" style="width: 26.2%;">26.2%</div>
+                        </div>
+                    </div>
+                    <div style="text-align: right; color: #666;">
+                        <div style="font-size: 0.9em;">98 / 374 articles</div>
+                        <div style="font-size: 0.85em; color: #999;">Avg sentiment: -0.142</div>
+                    </div>
+                </div>
+                
+                <div class="phrase-item medium-accuracy">
+                    <div>
+                        <div class="phrase-name">"aging crisis"</div>
+                        <span class="phrase-category category-limiting">limiting</span>
+                    </div>
+                    <div class="accuracy-bar">
+                        <div class="bar-container">
+                            <div class="bar-fill" style="width: 43.6%;">43.6%</div>
+                        </div>
+                    </div>
+                    <div style="text-align: right; color: #666;">
+                        <div style="font-size: 0.9em;">941 / 2,158 articles</div>
+                        <div style="font-size: 0.85em; color: #999;">Avg sentiment: -0.237</div>
+                    </div>
+                </div>
+                
+                <div class="phrase-item medium-accuracy">
+                    <div>
+                        <div class="phrase-name">"successful aging"</div>
+                        <span class="phrase-category category-empowering">empowering</span>
+                    </div>
+                    <div class="accuracy-bar">
+                        <div class="bar-container">
+                            <div class="bar-fill" style="width: 44.9%;">44.9%</div>
+                        </div>
+                    </div>
+                    <div style="text-align: right; color: #666;">
+                        <div style="font-size: 0.9em;">340 / 758 articles</div>
+                        <div style="font-size: 0.85em; color: #999;">Avg sentiment: +0.252</div>
+                    </div>
+                </div>
+                
+                <div class="phrase-item medium-accuracy">
+                    <div>
+                        <div class="phrase-name">"healthy aging"</div>
+                        <span class="phrase-category category-empowering">empowering</span>
+                    </div>
+                    <div class="accuracy-bar">
+                        <div class="bar-container">
+                            <div class="bar-fill" style="width: 46.3%;">46.3%</div>
+                        </div>
+                    </div>
+                    <div style="text-align: right; color: #666;">
+                        <div style="font-size: 0.9em;">447 / 966 articles</div>
+                        <div style="font-size: 0.85em; color: #999;">Avg sentiment: +0.239</div>
+                    </div>
+                </div>
+                
+                <div class="phrase-item high-accuracy">
+                    <div>
+                        <div class="phrase-name">"active aging"</div>
+                        <span class="phrase-category category-empowering">empowering</span>
+                    </div>
+                    <div class="accuracy-bar">
+                        <div class="bar-container">
+                            <div class="bar-fill" style="width: 51.9%;">51.9%</div>
+                        </div>
+                    </div>
+                    <div style="text-align: right; color: #666;">
+                        <div style="font-size: 0.9em;">720 / 1,387 articles</div>
+                        <div style="font-size: 0.85em; color: #999;">Avg sentiment: +0.296</div>
+                    </div>
+                </div>
+                
+                <div class="phrase-item high-accuracy">
+                    <div>
+                        <div class="phrase-name">"senior citizens"</div>
+                        <span class="phrase-category category-neutral">neutral</span>
+                    </div>
+                    <div class="accuracy-bar">
+                        <div class="bar-container">
+                            <div class="bar-fill" style="width: 64.2%;">64.2%</div>
+                        </div>
+                    </div>
+                    <div style="text-align: right; color: #666;">
+                        <div style="font-size: 0.9em;">2,802 / 4,365 articles</div>
+                        <div style="font-size: 0.85em; color: #999;">Avg sentiment: -0.053</div>
+                    </div>
+                </div>
+                
+                <div class="phrase-item high-accuracy">
+                    <div>
+                        <div class="phrase-name">"elder wisdom"</div>
+                        <span class="phrase-category category-empowering">empowering</span>
+                    </div>
+                    <div class="accuracy-bar">
+                        <div class="bar-container">
+                            <div class="bar-fill" style="width: 66.2%;">66.2%</div>
+                        </div>
+                    </div>
+                    <div style="text-align: right; color: #666;">
+                        <div style="font-size: 0.9em;">194 / 293 articles</div>
+                        <div style="font-size: 0.85em; color: #999;">Avg sentiment: +0.517</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2>⚠️ Top Mismatch Patterns</h2>
+            <p style="margin-bottom: 20px; color: #666;">How media language systematically distorts aging narratives:</p>
+            
+            <div class="mismatch-grid">
+                <div class="mismatch-item">
+                    <div class="mismatch-pattern">
+                        <span class="phrase-category category-neutral">neutral</span>
+                        <span class="arrow">→</span>
+                        <span class="phrase-category category-limiting">limiting</span>
+                    </div>
+                    <div style="color: #666;">
+                        <div style="font-size: 0.9em;">Avg sentiment: -0.631</div>
+                        <div style="font-size: 0.85em; color: #999;">28.4% of all mismatches</div>
+                    </div>
+                    <div class="mismatch-count">3,211</div>
+                </div>
+                
+                <div class="mismatch-item">
+                    <div class="mismatch-pattern">
+                        <span class="phrase-category category-empowering">empowering</span>
+                        <span class="arrow">→</span>
+                        <span class="phrase-category category-neutral">neutral</span>
+                    </div>
+                    <div style="color: #666;">
+                        <div style="font-size: 0.9em;">Avg sentiment: +0.040</div>
+                        <div style="font-size: 0.85em; color: #999;">25.0% of all mismatches</div>
+                    </div>
+                    <div class="mismatch-count">2,828</div>
+                </div>
+                
+                <div class="mismatch-item">
+                    <div class="mismatch-pattern">
+                        <span class="phrase-category category-neutral">neutral</span>
+                        <span class="arrow">→</span>
+                        <span class="phrase-category category-empowering">empowering</span>
+                    </div>
+                    <div style="color: #666;">
+                        <div style="font-size: 0.9em;">Avg sentiment: +0.658</div>
+                        <div style="font-size: 0.85em; color: #999;">22.5% of all mismatches</div>
+                    </div>
+                    <div class="mismatch-count">2,541</div>
+                </div>
+                
+                <div class="mismatch-item">
+                    <div class="mismatch-pattern">
+                        <span class="phrase-category category-limiting">limiting</span>
+                        <span class="arrow">→</span>
+                        <span class="phrase-category category-neutral">neutral</span>
+                    </div>
+                    <div style="color: #666;">
+                        <div style="font-size: 0.9em;">Avg sentiment: -0.070</div>
+                        <div style="font-size: 0.85em; color: #999;">14.2% of all mismatches</div>
+                    </div>
+                    <div class="mismatch-count">1,606</div>
+                </div>
+                
+                <div class="mismatch-item">
+                    <div class="mismatch-pattern">
+                        <span class="phrase-category category-empowering">empowering</span>
+                        <span class="arrow">→</span>
+                        <span class="phrase-category category-limiting">limiting</span>
+                    </div>
+                    <div style="color: #666;">
+                        <div style="font-size: 0.9em;">Avg sentiment: -0.537</div>
+                        <div style="font-size: 0.85em; color: #999;">7.0% of all mismatches</div>
+                    </div>
+                    <div class="mismatch-count">788</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2>🗺️ Provincial Insights</h2>
+            <p style="margin-bottom: 20px; color: #666;">Regional patterns in media language accuracy:</p>
+            
+            <div class="province-grid">
+                <div class="province-item">
+                    <div class="province-name">British Columbia</div>
+                    <div class="accuracy-bar">
+                        <div class="bar-container">
+                            <div class="bar-fill" style="width: 58.8%;">58.8%</div>
+                        </div>
+                    </div>
+                    <div style="text-align: right; color: #666;">
+                        <div style="font-size: 0.9em;">5,089 / 8,649 articles</div>
+                        <div style="font-size: 0.85em; color: #999;">Avg sentiment: -0.122</div>
+                    </div>
+                </div>
+                
+                <div class="province-item">
+                    <div class="province-name">Quebec</div>
+                    <div class="accuracy-bar">
+                        <div class="bar-container">
+                            <div class="bar-fill" style="width: 54.3%;">54.3%</div>
+                        </div>
+                    </div>
+                    <div style="text-align: right; color: #666;">
+                        <div style="font-size: 0.9em;">95 / 175 articles</div>
+                        <div style="font-size: 0.85em; color: #999;">Avg sentiment: -0.080</div>
+                    </div>
+                </div>
+                
+                <div class="province-item">
+                    <div class="province-name">Ontario</div>
+                    <div class="accuracy-bar">
+                        <div class="bar-container">
+                            <div class="bar-fill" style="width: 52.1%;">52.1%</div>
+                        </div>
+                    </div>
+                    <div style="text-align: right; color: #666;">
+                        <div style="font-size: 0.9em;">5,839 / 11,211 articles</div>
+                        <div style="font-size: 0.85em; color: #999;">Avg sentiment: +0.012</div>
+                    </div>
+                </div>
+                
+                <div class="province-item">
+                    <div class="province-name">Alberta</div>
+                    <div class="accuracy-bar">
+                        <div class="bar-container">
+                            <div class="bar-fill" style="width: 46.6%;">46.6%</div>
+                        </div>
+                    </div>
+                    <div style="text-align: right; color: #666;">
+                        <div style="font-size: 0.9em;">1,943 / 4,173 articles</div>
+                        <div style="font-size: 0.85em; color: #999;">Avg sentiment: -0.038</div>
+                    </div>
+                </div>
+                
+                <div class="province-item">
+                    <div class="province-name">Other</div>
+                    <div class="accuracy-bar">
+                        <div class="bar-container">
+                            <div class="bar-fill" style="width: 33.8%;">33.8%</div>
+                        </div>
+                    </div>
+                    <div style="text-align: right; color: #666;">
+                        <div style="font-size: 0.9em;">26 / 77 articles</div>
+                        <div style="font-size: 0.85em; color: #999;">Avg sentiment: +0.199</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="section">
+            <div class="insight-box">
+                <h3>💡 Key Research Insights</h3>
+                <ul>
+                    <li><strong>"Aging well" is the most distorted phrase</strong> — only 20.2% accuracy despite being labeled "empowering". Media uses positive language while actual content is often neutral or negative.</li>
+                    <li><strong>"Silver tsunami" has 98% mismatch rate</strong> — labeled as "limiting" but articles average +0.133 sentiment, suggesting the phrase is used sensationally even in balanced reporting.</li>
+                    <li><strong>Neutral phrases become limiting</strong> — 3,211 articles (28.4% of mismatches) use neutral language but have strongly negative sentiment (-0.631 avg), revealing hidden bias.</li>
+                    <li><strong>Empowering phrases underdeliver</strong> — 2,828 articles use empowering language but have neutral sentiment (+0.040), suggesting performative positivity without substance.</li>
+                    <li><strong>Regional variation exists</strong> — BC media is most accurate (58.8%), while Alberta shows highest distortion (46.6% accuracy), suggesting different editorial standards.</li>
+                    <li><strong>Overall negative bias</strong> — Average sentiment of -0.045 across all articles suggests Canadian media leans toward negative framing of aging, regardless of phrase choice.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,718 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Temporal Distortion Trends: 2023 → 2025 → 2026</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            color: #333;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            color: #667eea;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            color: #666;
+            font-size: 1.1em;
+            line-height: 1.6;
+        }
+        
+        .key-finding {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        
+        .key-finding h2 {
+            font-size: 1.8em;
+            margin-bottom: 10px;
+        }
+        
+        .key-finding p {
+            font-size: 1.2em;
+            line-height: 1.6;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .stat-card {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        
+        .stat-card h3 {
+            color: #666;
+            font-size: 0.9em;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+        }
+        
+        .stat-card .value {
+            font-size: 2.5em;
+            font-weight: bold;
+            color: #667eea;
+            margin-bottom: 5px;
+        }
+        
+        .stat-card .value.positive {
+            color: #66bb6a;
+        }
+        
+        .stat-card .value.negative {
+            color: #f5576c;
+        }
+        
+        .stat-card .label {
+            color: #999;
+            font-size: 0.9em;
+        }
+        
+        .section {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        
+        .section h2 {
+            color: #667eea;
+            font-size: 1.8em;
+            margin-bottom: 20px;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 10px;
+        }
+        
+        .timeline {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .timeline-item {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+        }
+        
+        .timeline-item.year-2023 {
+            border-left-color: #f57c00;
+        }
+        
+        .timeline-item.year-2025 {
+            border-left-color: #fbc02d;
+        }
+        
+        .timeline-item.year-2026 {
+            border-left-color: #66bb6a;
+        }
+        
+        .timeline-item h3 {
+            color: #333;
+            font-size: 1.5em;
+            margin-bottom: 15px;
+        }
+        
+        .timeline-metric {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        .timeline-metric:last-child {
+            border-bottom: none;
+        }
+        
+        .timeline-metric .label {
+            color: #666;
+            font-size: 0.9em;
+        }
+        
+        .timeline-metric .value {
+            font-weight: 600;
+            color: #333;
+        }
+        
+        .phrase-trends {
+            display: grid;
+            gap: 15px;
+        }
+        
+        .phrase-trend-item {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 20px;
+            align-items: center;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+        }
+        
+        .phrase-trend-item.improving {
+            border-left-color: #66bb6a;
+            background: #e8f5e9;
+        }
+        
+        .phrase-trend-item.declining {
+            border-left-color: #f5576c;
+            background: #ffebee;
+        }
+        
+        .phrase-trend-item.stable {
+            border-left-color: #fbc02d;
+            background: #fffde7;
+        }
+        
+        .phrase-name {
+            font-weight: 600;
+            color: #333;
+            font-size: 1.1em;
+        }
+        
+        .phrase-stats {
+            font-size: 0.9em;
+            color: #666;
+            margin-top: 5px;
+        }
+        
+        .trend-chart {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .trend-bar {
+            display: flex;
+            gap: 5px;
+            align-items: flex-end;
+            height: 60px;
+        }
+        
+        .trend-bar-item {
+            width: 40px;
+            background: linear-gradient(180deg, #667eea 0%, #764ba2 100%);
+            border-radius: 4px 4px 0 0;
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            padding-bottom: 5px;
+            color: white;
+            font-size: 0.75em;
+            font-weight: 600;
+        }
+        
+        .trend-arrow {
+            font-size: 2em;
+            font-weight: bold;
+        }
+        
+        .trend-arrow.up {
+            color: #66bb6a;
+        }
+        
+        .trend-arrow.down {
+            color: #f5576c;
+        }
+        
+        .trend-arrow.stable {
+            color: #fbc02d;
+        }
+        
+        .badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: 600;
+            margin-top: 5px;
+        }
+        
+        .badge-improving {
+            background: #c8e6c9;
+            color: #2e7d32;
+        }
+        
+        .badge-declining {
+            background: #ffcdd2;
+            color: #c62828;
+        }
+        
+        .badge-stable {
+            background: #fff9c4;
+            color: #f57f17;
+        }
+        
+        .province-grid {
+            display: grid;
+            gap: 15px;
+        }
+        
+        .province-item {
+            display: grid;
+            grid-template-columns: 150px 1fr auto;
+            gap: 15px;
+            align-items: center;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+        
+        .province-item.improving {
+            border-left: 4px solid #66bb6a;
+        }
+        
+        .province-item.declining {
+            border-left: 4px solid #f5576c;
+        }
+        
+        .province-name {
+            font-weight: 600;
+            color: #333;
+        }
+        
+        .category-comparison {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .category-card {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+        }
+        
+        .category-card.empowering {
+            border-left-color: #66bb6a;
+        }
+        
+        .category-card.limiting {
+            border-left-color: #f5576c;
+        }
+        
+        .category-card.neutral {
+            border-left-color: #2196f3;
+        }
+        
+        .category-card h3 {
+            color: #333;
+            margin-bottom: 15px;
+        }
+        
+        .insight-box {
+            background: #e3f2fd;
+            border-left: 4px solid #1976d2;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+        
+        .insight-box h3 {
+            color: #1565c0;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+        
+        .insight-box ul {
+            list-style-position: inside;
+            color: #555;
+            line-height: 1.8;
+        }
+        
+        .insight-box li {
+            margin-bottom: 10px;
+        }
+        
+        .insight-box strong {
+            color: #1565c0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📈 Temporal Distortion Trends</h1>
+            <p>Tracking How Language Distortion Changed: 2023 → 2025 → 2026</p>
+            <p style="margin-top: 10px; font-size: 0.95em; color: #999;">Is Canadian media getting more ageist or less?</p>
+        </div>
+        
+        <div class="key-finding">
+            <h2>🎯 Critical Discovery</h2>
+            <p><strong>Media accuracy DECLINED in 2025 (51.4%) but RECOVERED in 2026 (55.4%)</strong> — suggesting advocacy efforts may be working, but vigilance is needed to maintain progress.</p>
+        </div>
+        
+        <div class="section">
+            <h2>📊 Overall Year-Over-Year Trends</h2>
+            
+            <div class="timeline">
+                <div class="timeline-item year-2023">
+                    <h3>2023 Baseline</h3>
+                    <div class="timeline-metric">
+                        <span class="label">Articles</span>
+                        <span class="value">10,355</span>
+                    </div>
+                    <div class="timeline-metric">
+                        <span class="label">Accuracy</span>
+                        <span class="value">55.3%</span>
+                    </div>
+                    <div class="timeline-metric">
+                        <span class="label">Mismatches</span>
+                        <span class="value">4,625 (44.7%)</span>
+                    </div>
+                    <div class="timeline-metric">
+                        <span class="label">Avg Sentiment</span>
+                        <span class="value">-0.124</span>
+                    </div>
+                </div>
+                
+                <div class="timeline-item year-2025">
+                    <h3>2025 Decline</h3>
+                    <div class="timeline-metric">
+                        <span class="label">Articles</span>
+                        <span class="value">11,370</span>
+                    </div>
+                    <div class="timeline-metric">
+                        <span class="label">Accuracy</span>
+                        <span class="value" style="color: #f5576c;">51.4% ↓</span>
+                    </div>
+                    <div class="timeline-metric">
+                        <span class="label">Mismatches</span>
+                        <span class="value" style="color: #f5576c;">5,527 (48.6%)</span>
+                    </div>
+                    <div class="timeline-metric">
+                        <span class="label">Avg Sentiment</span>
+                        <span class="value" style="color: #66bb6a;">+0.020 ↑</span>
+                    </div>
+                    <div style="margin-top: 10px; padding-top: 10px; border-top: 1px solid #e0e0e0; font-size: 0.9em; color: #f57f17;">
+                        <strong>YoY Change:</strong> -3.9% accuracy
+                    </div>
+                </div>
+                
+                <div class="timeline-item year-2026">
+                    <h3>2026 Recovery</h3>
+                    <div class="timeline-metric">
+                        <span class="label">Articles</span>
+                        <span class="value">2,560</span>
+                    </div>
+                    <div class="timeline-metric">
+                        <span class="label">Accuracy</span>
+                        <span class="value" style="color: #66bb6a;">55.4% ↑</span>
+                    </div>
+                    <div class="timeline-metric">
+                        <span class="label">Mismatches</span>
+                        <span class="value">1,141 (44.6%)</span>
+                    </div>
+                    <div class="timeline-metric">
+                        <span class="label">Avg Sentiment</span>
+                        <span class="value">-0.009</span>
+                    </div>
+                    <div style="margin-top: 10px; padding-top: 10px; border-top: 1px solid #e0e0e0; font-size: 0.9em; color: #66bb6a;">
+                        <strong>YoY Change:</strong> +4.0% accuracy
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2>🔍 Key Phrase Trends</h2>
+            <p style="margin-bottom: 20px; color: #666;">How did specific phrases improve or worsen over time?</p>
+            
+            <div class="phrase-trends">
+                <div class="phrase-trend-item improving">
+                    <div>
+                        <div class="phrase-name">"aging crisis"</div>
+                        <div class="phrase-stats">2,158 articles • limiting phrase</div>
+                        <span class="badge badge-improving">Significantly Improving</span>
+                    </div>
+                    <div class="trend-chart">
+                        <div class="trend-bar">
+                            <div class="trend-bar-item" style="height: 30%;">29.8%</div>
+                            <div class="trend-bar-item" style="height: 49%;">49.3%</div>
+                            <div class="trend-bar-item" style="height: 71%;">70.8%</div>
+                        </div>
+                        <div>
+                            <div class="trend-arrow up">↑</div>
+                            <div style="font-size: 1.2em; font-weight: bold; color: #66bb6a;">+41.0%</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="phrase-trend-item improving">
+                    <div>
+                        <div class="phrase-name">"healthy aging"</div>
+                        <div class="phrase-stats">966 articles • empowering phrase</div>
+                        <span class="badge badge-improving">Significantly Improving</span>
+                    </div>
+                    <div class="trend-chart">
+                        <div class="trend-bar">
+                            <div class="trend-bar-item" style="height: 51%;">50.8%</div>
+                            <div class="trend-bar-item" style="height: 43%;">43.2%</div>
+                            <div class="trend-bar-item" style="height: 88%;">87.5%</div>
+                        </div>
+                        <div>
+                            <div class="trend-arrow up">↑</div>
+                            <div style="font-size: 1.2em; font-weight: bold; color: #66bb6a;">+36.7%</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="phrase-trend-item improving">
+                    <div>
+                        <div class="phrase-name">"successful aging"</div>
+                        <div class="phrase-stats">758 articles • empowering phrase</div>
+                        <span class="badge badge-improving">Significantly Improving</span>
+                    </div>
+                    <div class="trend-chart">
+                        <div class="trend-bar">
+                            <div class="trend-bar-item" style="height: 33%;">32.8%</div>
+                            <div class="trend-bar-item" style="height: 48%;">48.1%</div>
+                            <div class="trend-bar-item" style="height: 67%;">66.7%</div>
+                        </div>
+                        <div>
+                            <div class="trend-arrow up">↑</div>
+                            <div style="font-size: 1.2em; font-weight: bold; color: #66bb6a;">+33.9%</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="phrase-trend-item stable">
+                    <div>
+                        <div class="phrase-name">"aging well"</div>
+                        <div class="phrase-stats">2,216 articles • empowering phrase</div>
+                        <span class="badge badge-stable">Stable (Still Low)</span>
+                    </div>
+                    <div class="trend-chart">
+                        <div class="trend-bar">
+                            <div class="trend-bar-item" style="height: 18%;">18.1%</div>
+                            <div class="trend-bar-item" style="height: 22%;">21.8%</div>
+                            <div class="trend-bar-item" style="height: 23%;">22.9%</div>
+                        </div>
+                        <div>
+                            <div class="trend-arrow stable">→</div>
+                            <div style="font-size: 1.2em; font-weight: bold; color: #fbc02d;">+4.8%</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="phrase-trend-item stable">
+                    <div>
+                        <div class="phrase-name">"silver tsunami"</div>
+                        <div class="phrase-stats">101 articles • limiting phrase</div>
+                        <span class="badge badge-stable">Stable (Severely Distorted)</span>
+                    </div>
+                    <div class="trend-chart">
+                        <div class="trend-bar">
+                            <div class="trend-bar-item" style="height: 1%;">1.3%</div>
+                            <div class="trend-bar-item" style="height: 5%;">5.0%</div>
+                            <div class="trend-bar-item" style="height: 0%;">0.0%</div>
+                        </div>
+                        <div>
+                            <div class="trend-arrow stable">→</div>
+                            <div style="font-size: 1.2em; font-weight: bold; color: #fbc02d;">-1.3%</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2>🗺️ Provincial Trends</h2>
+            <p style="margin-bottom: 20px; color: #666;">Which provinces improved language accuracy?</p>
+            
+            <div class="province-grid">
+                <div class="province-item improving">
+                    <div class="province-name">Quebec</div>
+                    <div>
+                        <div style="font-size: 0.9em; color: #666;">2023: 52.0% → 2025: 54.5% → 2026: 60.0%</div>
+                        <span class="badge badge-improving">Improving (+8.0%)</span>
+                    </div>
+                    <div style="text-align: right;">
+                        <div style="font-size: 1.5em; font-weight: bold; color: #66bb6a;">↑</div>
+                        <div style="font-size: 0.85em; color: #666;">175 articles</div>
+                    </div>
+                </div>
+                
+                <div class="province-item">
+                    <div class="province-name">Ontario</div>
+                    <div>
+                        <div style="font-size: 0.9em; color: #666;">2023: 51.6% → 2025: 50.9% → 2026: 56.5%</div>
+                        <span class="badge badge-stable">Stable (+4.9%)</span>
+                    </div>
+                    <div style="text-align: right;">
+                        <div style="font-size: 1.5em; font-weight: bold; color: #fbc02d;">→</div>
+                        <div style="font-size: 0.85em; color: #666;">11,211 articles</div>
+                    </div>
+                </div>
+                
+                <div class="province-item">
+                    <div class="province-name">Alberta</div>
+                    <div>
+                        <div style="font-size: 0.9em; color: #666;">2023: 38.1% → 2025: 53.2% → 2026: 39.7%</div>
+                        <span class="badge badge-stable">Stable (+1.6%)</span>
+                    </div>
+                    <div style="text-align: right;">
+                        <div style="font-size: 1.5em; font-weight: bold; color: #fbc02d;">→</div>
+                        <div style="font-size: 0.85em; color: #666;">4,173 articles</div>
+                    </div>
+                </div>
+                
+                <div class="province-item declining">
+                    <div class="province-name">British Columbia</div>
+                    <div>
+                        <div style="font-size: 0.9em; color: #666;">2023: 66.5% → 2025: 50.8% → 2026: 54.0%</div>
+                        <span class="badge badge-declining">Significantly Declining (-12.5%)</span>
+                    </div>
+                    <div style="text-align: right;">
+                        <div style="font-size: 1.5em; font-weight: bold; color: #f5576c;">↓</div>
+                        <div style="font-size: 0.85em; color: #666;">8,649 articles</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2>📂 Phrase Category Trends</h2>
+            <p style="margin-bottom: 20px; color: #666;">Are limiting/neutral/empowering phrases improving?</p>
+            
+            <div class="category-comparison">
+                <div class="category-card empowering">
+                    <h3>Empowering Phrases</h3>
+                    <div class="timeline-metric">
+                        <span class="label">2023 Accuracy</span>
+                        <span class="value">30.7%</span>
+                    </div>
+                    <div class="timeline-metric">
+                        <span class="label">2025 Accuracy</span>
+                        <span class="value" style="color: #66bb6a;">40.5% (+9.8%)</span>
+                    </div>
+                    <div class="timeline-metric">
+                        <span class="label">2026 Accuracy</span>
+                        <span class="value" style="color: #66bb6a;">43.5% (+3.0%)</span>
+                    </div>
+                    <div style="margin-top: 15px; padding-top: 15px; border-top: 1px solid #e0e0e0;">
+                        <strong style="color: #66bb6a;">Overall: +12.8% improvement</strong>
+                        <div style="font-size: 0.9em; color: #666; margin-top: 5px;">
+                            Empowering phrases are becoming more accurate
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="category-card limiting">
+                    <h3>Limiting Phrases</h3>
+                    <div class="timeline-metric">
+                        <span class="label">2023 Accuracy</span>
+                        <span class="value">25.1%</span>
+                    </div>
+                    <div class="timeline-metric">
+                        <span class="label">2025 Accuracy</span>
+                        <span class="value" style="color: #66bb6a;">48.8% (+23.7%)</span>
+                    </div>
+                    <div class="timeline-metric">
+                        <span class="label">2026 Accuracy</span>
+                        <span class="value" style="color: #66bb6a;">69.0% (+20.2%)</span>
+                    </div>
+                    <div style="margin-top: 15px; padding-top: 15px; border-top: 1px solid #e0e0e0;">
+                        <strong style="color: #66bb6a;">Overall: +43.9% improvement</strong>
+                        <div style="font-size: 0.9em; color: #666; margin-top: 5px;">
+                            Biggest improvement - limiting phrases now more accurate
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="category-card neutral">
+                    <h3>Neutral Phrases</h3>
+                    <div class="timeline-metric">
+                        <span class="label">2023 Accuracy</span>
+                        <span class="value">68.5%</span>
+                    </div>
+                    <div class="timeline-metric">
+                        <span class="label">2025 Accuracy</span>
+                        <span class="value" style="color: #f5576c;">58.0% (-10.5%)</span>
+                    </div>
+                    <div class="timeline-metric">
+                        <span class="label">2026 Accuracy</span>
+                        <span class="value" style="color: #f5576c;">56.6% (-1.4%)</span>
+                    </div>
+                    <div style="margin-top: 15px; padding-top: 15px; border-top: 1px solid #e0e0e0;">
+                        <strong style="color: #f5576c;">Overall: -11.9% decline</strong>
+                        <div style="font-size: 0.9em; color: #666; margin-top: 5px;">
+                            Neutral phrases becoming less accurate - needs attention
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="section">
+            <div class="insight-box">
+                <h3>💡 Key Temporal Insights</h3>
+                <ul>
+                    <li><strong>2025 Dip Explained:</strong> Accuracy dropped to 51.4% in 2025 (from 55.3% in 2023), suggesting increased media coverage volume (11,370 articles) may have diluted quality. However, 2026 shows recovery to 55.4%.</li>
+                    
+                    <li><strong>Limiting Phrases Improving Fastest:</strong> "Aging crisis" accuracy jumped from 29.8% (2023) to 70.8% (2026) — a remarkable +41% improvement. Media is learning to use crisis language more accurately.</li>
+                    
+                    <li><strong>"Aging Well" Remains Problematic:</strong> Despite being labeled "empowering," this phrase only improved from 18.1% to 22.9% accuracy. It's still the most misused phrase, suggesting performative positivity without substance.</li>
+                    
+                    <li><strong>"Healthy Aging" Success Story:</strong> Jumped from 50.8% to 87.5% accuracy in 2026 — the highest accuracy among empowering phrases. This shows media CAN use positive language accurately when they try.</li>
+                    
+                    <li><strong>British Columbia Decline:</strong> BC dropped from 66.5% (2023) to 54.0% (2026) — a -12.5% decline. This is concerning given BC was the most accurate province in 2023. Requires investigation into what changed.</li>
+                    
+                    <li><strong>Quebec Improving:</strong> Quebec improved from 52.0% to 60.0% (+8%), suggesting provincial advocacy efforts may be working. This is a model for other provinces.</li>
+                    
+                    <li><strong>Neutral Phrases Declining:</strong> Neutral phrase accuracy dropped from 68.5% to 56.6% (-11.9%). Media is increasingly using neutral language with hidden bias — the most insidious form of distortion.</li>
+                    
+                    <li><strong>Sentiment Improving:</strong> Average sentiment improved from -0.124 (2023) to +0.020 (2025), then back to -0.009 (2026). Overall trend is toward less negative framing, but volatility suggests inconsistent editorial standards.</li>
+                    
+                    <li><strong>Advocacy Impact Visible:</strong> The 2026 recovery (+4% accuracy) after 2025 decline suggests advocacy efforts are having an effect. Continued pressure is needed to maintain and accelerate progress.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
