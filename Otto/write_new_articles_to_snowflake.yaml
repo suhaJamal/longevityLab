@@ -1,0 +1,13 @@
+component:
+  write:
+    connection: snowflake_aging_narratives
+    input:
+      name: sentiment_analysis_mediacloud_data
+      flow: longevityLab
+    strategy:
+      partitioned:
+        mode: append
+    snowflake:
+      table:
+        name: LONGEVITY
+        schema: PUBLIC
