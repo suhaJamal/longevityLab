@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Longevity Narratives - System Architecture</title>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            padding: 2rem;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+            overflow: hidden;
+        }
+
+        header {
+            background: linear-gradient(135deg, #5E3E8C 0%, #734838 100%);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        header p {
+            font-size: 1rem;
+            opacity: 0.95;
+        }
+
+        .controls {
+            background: #f8f9fa;
+            padding: 1.5rem 2rem;
+            border-bottom: 2px solid #e0e0e0;
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .btn {
+            padding: 0.6rem 1.2rem;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: all 0.3s;
+        }
+
+        .btn-primary {
+            background: #5E3E8C;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #734838;
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: #93A603;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #7a8a02;
+            transform: translateY(-2px);
+        }
+
+        .theme-toggle {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .diagram-container {
+            padding: 2rem;
+            overflow-x: auto;
+            background: white;
+        }
+
+        .mermaid {
+            display: flex;
+            justify-content: center;
+            min-height: 600px;
+        }
+
+        body.dark-mode {
+            background: #1a1a1a;
+        }
+
+        body.dark-mode .container {
+            background: #2a2a2a;
+            color: #e0e0e0;
+        }
+
+        body.dark-mode header {
+            background: linear-gradient(135deg, #5E3E8C 0%, #734838 100%);
+        }
+
+        body.dark-mode .controls {
+            background: #333;
+            border-bottom-color: #555;
+        }
+
+        body.dark-mode .diagram-container {
+            background: #2a2a2a;
+        }
+
+        footer {
+            background: #f8f9fa;
+            padding: 1.5rem 2rem;
+            text-align: center;
+            color: #666;
+            border-top: 2px solid #e0e0e0;
+            font-size: 0.9rem;
+        }
+
+        body.dark-mode footer {
+            background: #333;
+            color: #aaa;
+            border-top-color: #555;
+        }
+
+        .info-box {
+            background: #f0f3f8;
+            border-left: 4px solid #93A603;
+            padding: 1rem;
+            margin: 1rem 2rem;
+            border-radius: 6px;
+        }
+
+        body.dark-mode .info-box {
+            background: #333;
+            border-left-color: #93A603;
+        }
+
+        .info-box h3 {
+            color: #5E3E8C;
+            margin-bottom: 0.5rem;
+        }
+
+        body.dark-mode .info-box h3 {
+            color: #93A603;
+        }
+
+        .info-box p {
+            font-size: 0.95rem;
+            line-height: 1.6;
+            color: #666;
+        }
+
+        body.dark-mode .info-box p {
+            color: #aaa;
+        }
+
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 1.5rem;
+            }
+
+            .controls {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .btn {
+                width: 100%;
+            }
+
+            .theme-toggle {
+                width: 100%;
+            }
+
+            .theme-toggle button {
+                flex: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🏗️ Longevity Narratives System Architecture</h1>
+            <p>Complete Data Pipeline & Agentic Workflow (2023-2026)</p>
+        </header>
+
+        <div class="controls">
+            <div>
+                <button class="btn btn-primary" onclick="downloadDiagram()">📥 Download SVG</button>
+                <button class="btn btn-secondary" onclick="printDiagram()">🖨️ Print</button>
+            </div>
+            <div class="theme-toggle">
+                <button class="btn btn-primary" onclick="setTheme('light')">☀️ Light</button>
+                <button class="btn btn-primary" onclick="setTheme('dark')">🌙 Dark</button>
+            </div>
+        </div>
+
+        <div class="info-box">
+            <h3>📊 System Overview</h3>
+            <p>
+                This architecture shows the complete Longevity Narratives pipeline running on Ascend.io. 
+                Data flows from Snowflake (11,929 articles) and MediaCloud API (weekly new articles) through 
+                multiple processing layers (sentiment analysis, data cleaning, SQL analytics) to produce 
+                interactive dashboards and advocacy intelligence reports. The system is fully automated with 
+                weekly monitoring (Monday 9 AM UTC) and reporting (Friday 9 AM UTC).
+            </p>
+        </div>
+
+        <div class="diagram-container">
+            <div class="mermaid" id="mermaid-diagram">
+graph TB
+    subgraph "Data Sources"
+        SF[("Snowflake<br/>PUBLIC.CLEAN_LONGEVITY_TABLE<br/>11,929 articles")]
+        MC[("MediaCloud API<br/>Weekly Updates")]
+    end
+
+    subgraph "Ascend longevityLab Flow"
+        subgraph "Ingestion Layer"
+            R1[read_longevity_all_data<br/>YAML Read Component]
+            R2[read_mediacloud_weekly_new<br/>Python Read Component]
+        end
+
+        subgraph "Processing Layer - DuckDB Data Plane"
+            T1[sentiment_analysis_longevity_data<br/>Python Transform<br/>Lexicon-based Sentiment Analysis]
+            T2[cleaned_longevity_data<br/>Python Transform<br/>Data Normalization]
+            T3[sentiment_analysis_mediacloud_data<br/>Python Transform]
+            T4[cleaned_mediacloud_data<br/>Python Transform]
+        end
+
+        subgraph "Analysis Layer - SQL"
+            A1[executive_summary<br/>SQL Transform<br/>KPIs & Metrics]
+            A2[outlet_accuracy_analysis<br/>SQL Transform<br/>Media Performance]
+            A3[temporal_distortion_trends<br/>SQL Transform<br/>Year-over-Year Trends]
+            A4[weekly_new_articles_analysis<br/>SQL Transform<br/>Weekly Metrics]
+        end
+
+        subgraph "Output Layer"
+            W1[write_new_articles_to_snowflake<br/>YAML Write Component]
+        end
+    end
+
+    subgraph "Outputs & Artifacts"
+        D1[Interactive HTML Dashboard<br/>8 Analysis Sections<br/>Chart.js Visualizations]
+        D2[SQL Analysis Tables<br/>executive_summary<br/>outlet_accuracy_analysis<br/>temporal_distortion_trends]
+        D3[Advocacy Intelligence Reports<br/>Harm Assessment<br/>Opportunity Analysis]
+    end
+
+    subgraph "Automation"
+        AUTO1[weekly_mediacloud_update<br/>Scheduled: Every Monday]
+        AUTO2[weekly_pipeline_summary<br/>Scheduled: Every Friday]
+    end
+
+    subgraph "Connections"
+        C1[snowflake_aging_narratives<br/>Source Connection]
+        C2[data_plane_duckdb<br/>Processing Engine]
+    end
+
+    %% Data Flow
+    SF -->|Read| R1
+    MC -->|API Call| R2
+    R1 -->|Data| T1
+    R1 -->|Data| T2
+    R2 -->|Data| T3
+    R2 -->|Data| T4
+    T1 -->|Analyzed| A1
+    T2 -->|Cleaned| A1
+    T3 -->|Analyzed| A4
+    T4 -->|Cleaned| A4
+    T1 -->|Data| A2
+    T2 -->|Data| A2
+    T1 -->|Data| A3
+    T2 -->|Data| A3
+    A1 -->|Results| D1
+    A2 -->|Results| D1
+    A3 -->|Results| D1
+    A1 -->|Data| D2
+    A2 -->|Data| D2
+    A3 -->|Data| D2
+    A1 -->|Data| D3
+    A2 -->|Data| D3
+    A3 -->|Data| D3
+    T4 -->|Append| W1
+    W1 -->|Write| SF
+    SF -.->|Connection| C1
+    T1 -.->|Process| C2
+    T2 -.->|Process| C2
+    T3 -.->|Process| C2
+    T4 -.->|Process| C2
+    AUTO1 -.->|Trigger| R2
+    AUTO2 -.->|Trigger| A4
+
+    style SF fill:#5E3E8C,stroke:#734838,color:#fff
+    style MC fill:#5E3E8C,stroke:#734838,color:#fff
+    style R1 fill:#93A603,stroke:#7a8a02,color:#fff
+    style R2 fill:#93A603,stroke:#7a8a02,color:#fff
+    style T1 fill:#D97904,stroke:#b86603,color:#fff
+    style T2 fill:#D97904,stroke:#b86603,color:#fff
+    style T3 fill:#D97904,stroke:#b86603,color:#fff
+    style T4 fill:#D97904,stroke:#b86603,color:#fff
+    style A1 fill:#5E3E8C,stroke:#734838,color:#fff
+    style A2 fill:#5E3E8C,stroke:#734838,color:#fff
+    style A3 fill:#5E3E8C,stroke:#734838,color:#fff
+    style A4 fill:#5E3E8C,stroke:#734838,color:#fff
+    style W1 fill:#93A603,stroke:#7a8a02,color:#fff
+    style D1 fill:#734838,stroke:#5E3E8C,color:#fff
+    style D2 fill:#734838,stroke:#5E3E8C,color:#fff
+    style D3 fill:#734838,stroke:#5E3E8C,color:#fff
+    style AUTO1 fill:#D97904,stroke:#b86603,color:#fff
+    style AUTO2 fill:#D97904,stroke:#b86603,color:#fff
+    style C1 fill:#93A603,stroke:#7a8a02,color:#fff
+    style C2 fill:#93A603,stroke:#7a8a02,color:#fff
+            </div>
+        </div>
+
+        <footer>
+            <p>
+                <strong>Longevity Narratives - System Architecture</strong><br>
+                Ascend.io Agentic Data & Analytics Hackathon | Production System Status: LIVE ✅<br>
+                Dataset: 11,929 articles (2023-2026) | Last Updated: February 5, 2026
+            </p>
+        </footer>
+    </div>
+
+    <script>
+        mermaid.initialize({ startOnLoad: true, theme: 'default' });
+        mermaid.contentLoaded();
+
+        function setTheme(theme) {
+            if (theme === 'dark') {
+                document.body.classList.add('dark-mode');
+                mermaid.initialize({ startOnLoad: true, theme: 'dark' });
+            } else {
+                document.body.classList.remove('dark-mode');
+                mermaid.initialize({ startOnLoad: true, theme: 'default' });
+            }
+            mermaid.contentLoaded();
+        }
+
+        function downloadDiagram() {
+            const svg = document.querySelector('.mermaid svg');
+            if (!svg) {
+                alert('Diagram not rendered yet. Please wait a moment and try again.');
+                return;
+            }
+            const serializer = new XMLSerializer();
+            const svgString = serializer.serializeToString(svg);
+            const blob = new Blob([svgString], { type: 'image/svg+xml' });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = 'Longevity_Narratives_Architecture.svg';
+            link.click();
+            URL.revokeObjectURL(url);
+        }
+
+        function printDiagram() {
+            window.print();
+        }
+    </script>
+</body>
+</html>

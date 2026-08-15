@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Longevity Narratives - Hackathon Submission</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.8;
+            color: #333;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+        }
+
+        header {
+            background: #5E3E8C;
+            color: white;
+            padding: 3rem 2rem;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+        }
+
+        header p {
+            font-size: 1.1rem;
+            opacity: 0.95;
+        }
+
+        .content {
+            padding: 3rem 2rem;
+        }
+
+        section {
+            margin-bottom: 3rem;
+            scroll-margin-top: 100px;
+        }
+
+        header {
+            background: linear-gradient(135deg, #5E3E8C 0%, #734838 100%);
+            color: white;
+            padding: 3rem 2rem;
+            text-align: center;
+        }
+
+        h2 {
+            color: #5E3E8C;
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 3px solid #93A603;
+        }
+
+        h3 {
+            color: #734838;
+            font-size: 1.3rem;
+            margin-top: 1.5rem;
+            margin-bottom: 0.8rem;
+        }
+
+        strong {
+            color: #5E3E8C;
+            font-weight: 600;
+        }
+
+        .highlight {
+            background: #fff3cd;
+            border-left: 4px solid #D97904;
+            padding: 1rem;
+            margin: 1.5rem 0;
+            border-radius: 4px;
+        }
+
+        .success {
+            background: #f0f8e6;
+            border-left: 4px solid #93A603;
+            padding: 1rem;
+            margin: 1.5rem 0;
+            border-radius: 4px;
+        }
+
+        .stat-box {
+            background: #f8f9fa;
+            border: 2px solid #5E3E8C;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin: 1.5rem 0;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .stat-item {
+            padding: 1rem;
+            background: white;
+            border-radius: 6px;
+            border-left: 4px solid #93A603;
+        }
+
+        .stat-item strong {
+            display: block;
+            font-size: 1.3rem;
+            color: #5E3E8C;
+            margin-bottom: 0.3rem;
+        }
+
+        .deliverables {
+            background: #f0f3f8;
+            padding: 2rem;
+            border-radius: 8px;
+            margin: 2rem 0;
+            border-left: 5px solid #93A603;
+        }
+
+        .file-link {
+            display: inline-block;
+            background: #5E3E8C;
+            color: white;
+            padding: 0.8rem 1.5rem;
+            border-radius: 6px;
+            text-decoration: none;
+            margin: 0.5rem 0.5rem 0.5rem 0;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .file-link:hover {
+            background: #734838;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(94, 62, 140, 0.4);
+        }
+
+        .file-link.dashboard {
+            background: #93A603;
+        }
+
+        .file-link.dashboard:hover {
+            background: #7a8a02;
+        }
+
+        .file-link.video {
+            background: #D97904;
+        }
+
+        .file-link.video:hover {
+            background: #b86603;
+        }
+
+        .visualization {
+            background: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin: 1.5rem 0;
+            border: 2px dashed #93A603;
+        }
+
+        .visualization h4 {
+            color: #5E3E8C;
+            margin-bottom: 0.5rem;
+        }
+
+        .tech-item {
+            background: white;
+            border: 2px solid #5E3E8C;
+            padding: 1rem;
+            border-radius: 6px;
+            text-align: center;
+        }
+
+        .tech-item strong {
+            display: block;
+            margin-bottom: 0.3rem;
+        }
+
+        .nav-button {
+            display: inline-block;
+            background: #5E3E8C;
+            color: white;
+            padding: 0.6rem 1.2rem;
+            border-radius: 6px;
+            text-decoration: none;
+            margin-right: 0.5rem;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+        }
+
+        .nav-button:hover {
+            background: #734838;
+            transform: translateY(-2px);
+        }
+
+        .section-nav {
+            background: #f0f3f8;
+            padding: 1rem;
+            border-radius: 6px;
+            margin-bottom: 2rem;
+            border-left: 4px solid #93A603;
+        }
+
+        .impact-badge {
+            display: inline-block;
+            background: #93A603;
+            color: white;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            margin: 0.2rem;
+        }
+
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 1.8rem;
+            }
+
+            .content {
+                padding: 1.5rem 1rem;
+            }
+
+            .stat-box {
+                grid-template-columns: 1fr;
+            }
+
+            .tech-stack {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- HEADER -->
+        <header>
+            <h1>🎯 Longevity Narratives</h1>
+            <p>Automated Media Language Intelligence System for Advocacy</p>
+            <p style="font-size: 0.95rem; margin-top: 1rem; opacity: 0.9;">Ascend.io Agentic Data & Analytics Hackathon 2026</p>
+        </header>
+
+        <!-- NAVIGATION -->
+        <div style="background: #5E3E8C; padding: 1rem 2rem; display: flex; gap: 0.5rem; flex-wrap: wrap; justify-content: center;">
+            <a href="#problem" class="nav-button">Problem</a>
+            <a href="#pipeline" class="nav-button">Pipeline</a>
+            <a href="#agentic" class="nav-button">Agentic Features</a>
+            <a href="#learnings" class="nav-button">Learnings</a>
+            <a href="#deliverables" class="nav-button">Deliverables</a>
+            <a href="#impact" class="nav-button">Impact</a>
+        </div>
+
+        <!-- MAIN CONTENT -->
+        <div class="content">
+
+            <!-- SECTION 1: THE PROBLEM -->
+            <section id="problem">
+                <h2>1. THE PROBLEM</h2>
+                <p>Canadian media shapes how millions think about aging. Our analysis of <strong>11,929 articles from 2023-2026</strong> reveals a critical narrative crisis:</p>
+                
+                <div class="highlight">
+                    <strong>18.4% of coverage uses harmful "limiting" language that frames seniors as burdens or crises.</strong>
+                </div>
+
+                <p>This systematic bias:</p>
+                <ul>
+                    <li>🔴 Influences policy decisions about senior services</li>
+                    <li>🔴 Shapes public perception of older adults' value</li>
+                    <li>🔴 Underrepresents seniors' contributions to society</li>
+                    <li>🟡 Only 13.9% of coverage celebrates their capabilities</li>
+                    <li>🟡 67.7% is neutral (untapped reframing opportunity)</li>
+                </ul>
+
+                <p><strong>The Central Question:</strong> How can advocates measure, track, and change media language about aging in real-time?</p>
+            </section>
+
+            <!-- SECTION 2: DATA SOURCES & PIPELINE DESIGN -->
+            <section id="pipeline">
+                <h2>2. DATA SOURCES & PIPELINE DESIGN</h2>
+
+                <h3>📊 Data Architecture</h3>
+                <div class="stat-box">
+                    <div class="stat-item">
+                        <strong>11,929 Articles</strong>
+                        <span>Historical dataset (2023-2026)</span>
+                    </div>
+                    <div class="stat-item">
+                        <strong>50-200/Week</strong>
+                        <span>New articles via MediaCloud API</span>
+                    </div>
+                    <div class="stat-item">
+                        <strong>17 Phrases</strong>
+                        <span>Across 3 sentiment categories</span>
+                    </div>
+                    <div class="stat-item">
+                        <strong>4 Provinces</strong>
+                        <span>Ontario, BC, Alberta, Quebec</span>
+                    </div>
+                </div>
+
+                <h3>🏗️ Dual-Pipeline Architecture</h3>
+
+                <p><strong>Pipeline 1: Historical Analysis</strong></p>
+                <ul>
+                    <li>Processes complete 11,929-article dataset from Snowflake</li>
+                    <li>AI sentiment classification (limiting/neutral/empowering)</li>
+                    <li>Multi-dimensional analysis: outlets, topics, geography, temporal trends</li>
+                    <li>Generates interactive advocacy dashboard with 8 analysis sections</li>
+                </ul>
+
+                <p><strong>Pipeline 2: Weekly Monitoring</strong> (Automated)</p>
+                <ul>
+                    <li>⏰ Runs every Monday 9 AM UTC (MediaCloud API fetch)</li>
+                    <li>Analyzes new articles (sentiment + baseline comparison)</li>
+                    <li>Appends to Snowflake (incremental, non-destructive growth)</li>
+                    <li>📧 Sends Friday report automation (stakeholder updates)</li>
+                </ul>
+
+                <div class="success">
+                    <strong>✅ System Status: LIVE</strong><br>
+                    Processing Engine: Ascend longevityLab Flow | Storage: Snowflake | Last run: 1 hour ago | Execution time: 13.1 seconds
+                </div>
+            </section>
+
+            <!-- SECTION 3: AGENTIC FEATURES -->
+            <section id="agentic">
+                <h2>3. ASCEND'S AGENTIC FEATURES USED</h2>
+
+                <h3>🤖 Feature 1: Automated Data Collection Agent</h3>
+                <p><strong>MediaCloud API Integration</strong></p>
+                <ul>
+                    <li>Programmatic article fetching from 17 phrases across 4 Canadian provinces</li>
+                    <li>Weekly scheduling: Runs autonomously every Monday (zero manual intervention)</li>
+                    <li>Intelligent retry logic: Handles API rate limits, timeouts, gracefully processes empty results</li>
+                    <li>Error resilience: Deduplication by URL, validation checks, anomaly detection</li>
+                </ul>
+
+                <h3>🧠 Feature 2: AI-Powered Sentiment Analysis Agent</h3>
+                <p><strong>Dual Sentiment Methods with Confidence Scoring</strong></p>
+                <ul>
+                    <li>Method A: GPT-based AI labels (ground truth, context-aware) = <strong>ai_label</strong> column</li>
+                    <li>Method B: Lexicon-based sentiment analysis with keyword density scoring = <strong>otto_label</strong> column (transparent, explainable, keyword-driven classification)</li>
+                    <li>57% agreement rate = both methods capture different nuances</li>
+                    <li>Confidence scoring (0.3-1.0) flags ambiguous narratives for review</li>
+                    <li>Ensemble approach: Leverages strengths of both methods</li>
+                </ul>
+
+                <h3>⚙️ Feature 3: Multi-Component Orchestration</h3>
+                <p><strong>10+ Coordinated Components in Seamless Workflow</strong></p>
+                <ul>
+                    <li>Data flows sequentially: Read → Clean → Analyze → Transform → Output</li>
+                    <li>Conditional workflows: Different paths for historical vs. weekly data</li>
+                    <li>Error handling: Schema validation, deduplication, graceful failure modes</li>
+                    <li>Status: All components passing ✅ with execution time under 15 seconds</li>
+                </ul>
+
+                <h3>📋 Feature 4: Automated Reporting Agent</h3>
+                <p><strong>SQL Analytics + Visualization + Distribution</strong></p>
+                <ul>
+                    <li>SQL analytics generate: executive_summary, outlet_accuracy_analysis, temporal_distortion_trends</li>
+                    <li>Interactive HTML dashboard: 8 analysis sections with Chart.js visualizations</li>
+                    <li>Scheduled distribution: Email reports Friday 9 AM UTC (automated stakeholder updates)</li>
+                    <li>Incremental database growth: Each Monday adds 50-200 articles for ongoing trend analysis</li>
+                </ul>
+
+                <div class="highlight">
+                    <strong>🎯 Agentic Intelligence:</strong> System requires zero human intervention after deployment. It continuously learns from new articles, detects narrative shifts, and alerts advocates to emerging crises—exactly what "agentic" means in practice.
+                </div>
+            </section>
+
+            <!-- SECTION 4: LEARNINGS -->
+            <section id="learnings">
+                <h2>4. WHAT WE LEARNED</h2>
+
+                <h3>✨ Learning 1: Proof That Advocacy Works</h3>
+                <div class="stat-box">
+                    <div class="stat-item">
+                        <strong>2025 Breakthrough</strong>
+                        <span>Empowering coverage jumped +4%</span>
+                    </div>
+                    <div class="stat-item">
+                        <strong>Limiting Language Dropped</strong>
+                        <span>From 17.9% to 15.7% (-2.2%)</span>
+                    </div>
+                    <div class="stat-item">
+                        <strong>Timeline</strong>
+                        <span>2023 baseline → 2025 peak</span>
+                    </div>
+                    <div class="stat-item">
+                        <strong>Implication</strong>
+                        <span>Media narratives ARE changeable</span>
+                    </div>
+                </div>
+
+                <h3>🗺️ Learning 2: Geographic Variation</h3>
+                <ul>
+                    <li><strong>Ontario:</strong> 6,506 articles (54.6% of coverage) with 19.5% limiting = largest opportunity for impact</li>
+                    <li><strong>British Columbia:</strong> 3,192 articles with 16.1% limiting = best practice model (can we replicate?)</li>
+                    <li><strong>Alberta:</strong> 2,124 articles with 18.6% limiting = middle ground, growth potential</li>
+                    <li><strong>Insight:</strong> Regional advocacy strategies must differ; BC approach should be studied nationally</li>
+                </ul>
+
+                <h3>📚 Learning 3: Topic-Specific Narratives</h3>
+                <ul>
+                    <li><strong>Social_Community stories:</strong> 27.7% empowering (seniors as community contributors)</li>
+                    <li><strong>Healthcare coverage:</strong> Only 10% empowering (crisis narratives dominate)</li>
+                    <li><strong>8,080 neutral articles:</strong> Massive conversion opportunity (reframe factual stories with empowering angles)</li>
+                    <li><strong>Insight:</strong> Topic selection determines narrative tone—different stories need different strategies</li>
+                </ul>
+
+                <h3>🎯 Learning 4: Outlet Accountability</h3>
+                <ul>
+                    <li><strong>Top 5 worst outlets</strong> (Global, CityNews, CBC) account for 600+ limiting articles</li>
+                    <li><strong>Model outlets</strong> (The Spectator, Niagara Falls Review) consistently 19%+ empowering</li>
+                    <li><strong>Local vs. national:</strong> Small outlets demonstrate better narrative quality than major chains</li>
+                    <li><strong>Insight:</strong> Outlet accountability is trackable; we can measure progress per outlet</li>
+                </ul>
+
+                <h3>🚀 Learning 5: System Enables Strategy</h3>
+                <ul>
+                    <li><strong>One-time analysis ≠ strategy:</strong> Static reports become outdated; built production system instead</li>
+                    <li><strong>Weekly monitoring catches shifts:</strong> 2026 regression (25.8% limiting) would have been invisible without automation</li>
+                    <li><strong>Data-driven advocacy:</strong> Stop guessing, start measuring media response to campaigns</li>
+                    <li><strong>Insight:</strong> Continuous intelligence enables rapid response and strategic pivots</li>
+                </ul>
+            </section>
+
+            <!-- SECTION 5: DELIVERABLES -->
+            <section id="deliverables">
+                <h2>5. DELIVERABLES & ACCESS</h2>
+
+                <div class="deliverables">
+                    <h3>📊 Interactive Dashboard</h3>
+                    <p><a href="5.html" class="file-link dashboard" target="_blank">
+                        → VIEW INTERACTIVE DASHBOARD
+                    </a></p>
+                    
+                    <p style="margin-top: 1rem; color: #666;">
+                        <strong>8 Analysis Sections:</strong><br>
+                        Harm Assessment | Opportunity Analysis | Topic Breakdown | Outlet Targeting | Geographic Distribution | Temporal Trends | Narrative Landscape | Strategic Summary
+                    </p>
+
+                    <p style="color: #666; font-size: 0.95rem;">
+                        <strong>Features:</strong> Chart.js visualizations | Dark/light mode | CSV export | Recommended actions in every section
+                    </p>
+                </div>
+
+                <h3>📈 Key Visualizations in Dashboard</h3>
+                <div class="visualization-list">
+                    <li><strong>Sentiment Overview:</strong> 18.4% harmful, 67.7% neutral, 13.9% empowering (doughnut chart)</li>
+                    <li><strong>Top Harmful Outlets:</strong> Ranked by limiting coverage % (horizontal bar chart)</li>
+                    <li><strong>Topic Analysis:</strong> Social_Community (27.7% empowering) vs Healthcare (10%) comparison</li>
+                    <li><strong>2025 Breakthrough:</strong> Temporal trend showing +4% improvement then 2026 regression (line chart)</li>
+                    <li><strong>Geographic Targeting:</strong> Ontario (19.5%) vs BC (16.1%) limiting rates (dual-axis bar chart)</li>
+                    <li><strong>Outlet Tiers:</strong> Critical, Valuable, and Exemplar classifications with engagement strategy</li>
+                </div>
+
+                <h3>📋 Supporting Documentation</h3>
+                <p style="margin-bottom: 1rem;">
+                    <a href="architecture.html" class="file-link" target="_blank">
+                        → System Architecture Diagram (Visual)
+                    </a>
+                    <a href="pipeline.png" class="file-link" target="_blank">
+                        → Pipeline Screenshot (Proof of Automation)
+                    </a>
+                </p>
+            </section>
+
+            <!-- SECTION 6: IMPACT & NEXT STEPS -->
+            <section id="impact">
+                <h2>6. TECHNICAL IMPACT & NEXT STEPS</h2>
+
+                <h3>✅ What We Built (Production-Ready)</h3>
+                <ul>
+                    <li><span class="impact-badge">✓ Automated</span> Weekly monitoring—no manual data collection needed</li>
+                    <li><span class="impact-badge">✓ Live</span> Production-ready system with 11,929 articles baseline, growing weekly</li>
+                    <li><span class="impact-badge">✓ AI-Driven</span> Dual sentiment methods for accuracy validation and transparency</li>
+                    <li><span class="impact-badge">✓ Actionable</span> Converts raw data into advocacy intelligence (targets + strategies)</li>
+                    <li><span class="impact-badge">✓ Measurable</span> Proves advocacy works (2025 breakthrough = +4% improvement)</li>
+                </ul>
+
+                <h3>🚀 Immediate Actions (Next 30 Days)</h3>
+                <ul>
+                    <li>Engage Tier 1 outlets (Global News, CityNews, CBC) with data-backed media outreach</li>
+                    <li>Deploy counter-narrative media kit backed by this dataset</li>
+                    <li>Identify which 2025 tactics drove breakthrough (+4% improvement)</li>
+                </ul>
+
+                <h3>📈 Short-Term (90 Days)</h3>
+                <ul>
+                    <li>Partner with model outlets (The Spectator, Niagara Falls Review) as collaborators</li>
+                    <li>Develop journalist training programs on aging narratives</li>
+                    <li>Launch Ontario-focused campaign (54.6% of all articles)</li>
+                </ul>
+
+                <h3>🎯 Long-Term Success Metrics</h3>
+                <ul>
+                    <li>Reduce limiting coverage to <15% (from current 18.4%)</li>
+                    <li>Increase empowering coverage to >20% (from current 13.9%)</li>
+                    <li>Convert 10% of neutral articles (8,080 articles) to empowering frame</li>
+                    <li>Weekly monitoring shows sustained improvement (not spike/regression)</li>
+                </ul>
+
+                <div class="highlight" style="background: #f0f3f8; border-left-color: #5E3E8C;">
+                    <strong>Why This Matters:</strong> This isn't just data analysis. It's a <strong>production intelligence system that enables advocacy strategy</strong>. Every week, the system tells advocates whether their campaigns are working, where to focus next, and when threats emerge. That's the power of continuous agentic monitoring.
+                </div>
+            </section>
+
+            <!-- TECH STACK -->
+            <section>
+                <h2>🛠️ Technical Stack</h2>
+                <div class="tech-stack">
+                    <div class="tech-item">
+                        <strong>Orchestration</strong>
+                        <span>Ascend.io (longevityLab Flow)</span>
+                    </div>
+                    <div class="tech-item">
+                        <strong>Data Processing</strong>
+                        <span>DuckDB (in-memory analytics)</span>
+                    </div>
+                    <div class="tech-item">
+                        <strong>Storage</strong>
+                        <span>Snowflake (persistent)</span>
+                    </div>
+                    <div class="tech-item">
+                        <strong>Data Collection</strong>
+                        <span>MediaCloud API (weekly)</span>
+                    </div>
+                    <div class="tech-item">
+                        <strong>AI/ML Methods</strong>
+                        <span>GPT AI Labels + Lexicon-based Sentiment Analysis (keyword density scoring)</span>
+                    </div>
+                    <div class="tech-item">
+                        <strong>Visualization</strong>
+                        <span>Chart.js + HTML5</span>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+
+        <!-- FOOTER -->
+        <footer>
+            <p><strong>Longevity Narratives - Ascend.io Hackathon Submission</strong></p>
+            <p style="margin-top: 0.5rem; font-size: 0.9rem;">
+                Dataset: 11,929 articles from Canadian media (2023-2026) | 
+                Production Status: LIVE | 
+                Automation: Running | 
+                Next Update: Monday 9 AM UTC
+            </p>
+            <p style="margin-top: 1rem; font-size: 0.85rem; color: #999;">
+                Built with Ascend.io orchestration, DuckDB analytics, Snowflake storage, MediaCloud API, GPT AI analysis, and lexicon-based sentiment analysis (keyword density scoring).
+            </p>
+        </footer>
+    </div>
+</body>
+</html>

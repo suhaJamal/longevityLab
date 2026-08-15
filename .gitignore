@@ -27,6 +27,7 @@ __pycache__/
 data/*.csv
 newData/*.csv
 newData/*.json
+gender-ageism-gebnlp2026/data/*
 
 # Security/Credentials
 Docs/access_key.txt

@@ -10,7 +10,7 @@ import pandas as pd
 import time
 
 # Configuration
-API_KEY = '9e047cbfc9e1cd397857c21eb52c78902fc5f181'
+API_KEY = '...'
 START_DATE = date(2023, 1, 1)
 END_DATE = date(2023, 12, 31)
 

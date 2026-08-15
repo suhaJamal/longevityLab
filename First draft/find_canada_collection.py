@@ -5,7 +5,7 @@ Find Canada collection ID in Media Cloud
 
 import mediacloud.api
 
-API_KEY = '9e047cbfc9e1cd397857c21eb52c78902fc5f181'
+API_KEY = '...'
 
 print("="*80)
 print("SEARCHING FOR CANADIAN MEDIA COLLECTIONS")

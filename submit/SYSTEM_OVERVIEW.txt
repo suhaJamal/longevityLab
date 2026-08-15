@@ -1,0 +1,216 @@
+================================================================================
+LONGEVITY NARRATIVES ANALYSIS SYSTEM
+================================================================================
+
+PROJECT PURPOSE
+---------------
+Analyzes Canadian media coverage of aging narratives (2023-2026) to identify
+harmful "limiting" narratives and amplify empowering stories about aging.
+Provides actionable advocacy intelligence for media engagement strategy.
+
+DATASET
+-------
+Source: Snowflake PUBLIC.CLEAN_LONGEVITY_TABLE
+Volume: 11,929 curated articles from Canadian media outlets
+Period: 2023-2026
+Coverage: National and provincial outlets across Canada
+
+ARCHITECTURE
+------------
+Data Source:    Snowflake (snowflake_aging_narratives connection)
+Processing:     DuckDB Data Plane (in-memory analytics)
+Pipeline:       Ascend longevityLab flow
+Automation:     Weekly MediaCloud updates, automated reporting
+
+KEY COMPONENTS
+--------------
+1. read_longevity_all_data.yaml
+   - Ingests CLEAN_LONGEVITY_TABLE from Snowflake
+
+2. sentiment_analysis_longevity_data.py
+   - Otto's keyword-based sentiment classifier
+   - Adds otto_label and otto_confidence columns
+   - Three categories: limiting/neutral/empowering
+
+3. executive_summary.sql
+   - High-level KPIs and distribution metrics
+
+4. outlet_accuracy_analysis.sql
+   - Media outlet performance and harm rates
+
+5. temporal_distortion_trends.sql
+   - Year-over-year narrative evolution
+
+6. weekly_new_articles_analysis.sql
+   - Weekly article metrics and trends
+
+DATA PIPELINES
+--------------
+The longevityLab flow contains two distinct pipelines:
+
+1. MAIN LONGEVITY ANALYSIS PIPELINE
+   Purpose: Analyze complete historical dataset (11,929 articles)
+   
+   Flow:
+   Snowflake CLEAN_LONGEVITY_TABLE
+     → read_longevity_all_data.yaml
+     → sentiment_analysis_longevity_data.py (adds otto_label, otto_confidence)
+     → cleaned_longevity_data.py (normalizes data)
+     → SQL Analysis (executive_summary, outlet_accuracy, temporal_trends)
+     → Advocacy Intelligence Dashboard
+   
+   Features:
+   - Full dataset processing (11,929 articles)
+   - Otto's keyword-based sentiment classification
+   - Ground truth comparison (AI_LABEL vs otto_label, 57% agreement)
+   - Multi-dimensional analysis (harm, opportunity, outlets, geography, trends)
+   - Interactive HTML dashboard with 8 sections
+   
+   Use Cases:
+   - Strategic advocacy planning
+   - Media outlet engagement prioritization
+   - Geographic targeting (Ontario, BC, Alberta, Quebec)
+   - Temporal trend analysis (2023-2026)
+   - Topic opportunity identification
+
+2. WEEKLY MEDIACLOUD UPDATE PIPELINE
+   Purpose: Monitor new articles from MediaCloud API for emerging narratives
+   
+   Flow:
+   MediaCloud API (weekly)
+     → read_mediacloud_weekly_new.py (fetch last 7 days)
+     → sentiment_analysis_mediacloud_data.py (classify sentiment)
+     → cleaned_mediacloud_data.py (normalize and validate)
+     → weekly_new_articles_analysis.sql (compare to baselines)
+     → write_new_articles_to_snowflake.yaml (append to CLEAN_LONGEVITY_TABLE)
+   
+   Features:
+   - Automated weekly execution (every Monday)
+   - Incremental processing (new articles only)
+   - Quality control (deduplication, validation)
+   - Trend monitoring (compare to historical patterns)
+   - Alert system (flags narrative shifts)
+   
+   Use Cases:
+   - Real-time narrative monitoring
+   - Early warning for harmful narrative spikes
+   - Weekly advocacy briefings
+   - Rapid response to emerging trends
+   - Continuous dataset enrichment
+
+PIPELINE INTEGRATION
+--------------------
+How They Work Together:
+
+1. Historical Foundation
+   Main pipeline establishes baselines from 11,929 articles
+
+2. Continuous Monitoring
+   MediaCloud pipeline adds 50-200 new articles weekly
+
+3. Unified Storage
+   Both write to same Snowflake table (CLEAN_LONGEVITY_TABLE)
+
+4. Comparative Analysis
+   Weekly analysis detects:
+   - Narrative shifts (e.g., increase in limiting coverage)
+   - Emerging topics or themes
+   - New media outlets
+   - Geographic expansion
+
+5. Feedback Loop
+   Weekly insights inform advocacy campaign adjustments
+
+Example Weekly Workflow:
+  Monday:    MediaCloud pipeline runs → 50-200 new articles processed
+  Tue-Thu:   Analysts review weekly results, identify trends
+  Friday:    Weekly summary automation → Email report generated
+  Monthly:   Re-run main analysis with updated dataset
+
+Data Quality:
+  - Deduplication (check URLs before processing)
+  - Schema validation (consistent column structure)
+  - Confidence thresholds (flag low-confidence for review)
+  - Anomaly detection (investigate statistical outliers)
+
+SENTIMENT CLASSIFICATION
+------------------------
+LIMITING (18.4%):    Crisis/burden framing - "aging crisis", "healthcare burden"
+NEUTRAL (67.7%):     Factual reporting - "study shows", "statistics indicate"
+EMPOWERING (13.9%):  Active/positive framing - "active aging", "contribution"
+
+Ground Truth: AI_LABEL column (pre-labeled, context-aware)
+Otto Method:  Keyword-based with confidence scoring (0.3-1.0)
+Agreement:    57% between AI and Otto classifications
+
+KEY FINDINGS
+------------
+Temporal Trends:
+  2023: 17.9% limiting, 10.0% empowering (baseline)
+  2024: 20.4% limiting, 13.3% empowering (worsening)
+  2025: 15.7% limiting, 17.3% empowering (breakthrough!)
+  2026: 25.8% limiting, 15.2% empowering (alarming regression)
+
+Top Harmful Outlets:
+  1. globalnews.ca - 26.0% limiting (327 articles)
+  2. citynews.ca   - 25.9% limiting (625 articles)
+  3. cbc.ca        - 25.9% limiting (266 articles)
+
+Geographic Distribution:
+  Ontario:          6,506 articles (19.5% limiting) - Highest volume
+  British Columbia: 3,192 articles (16.1% limiting) - Lowest harm rate
+  Alberta:          2,124 articles (18.6% limiting)
+  Quebec:              73 articles (24.7% limiting) - Small sample
+
+Best Topic:
+  Social_Community: 27.7% empowering (578 positive articles)
+
+OUTPUTS
+-------
+1. Interactive HTML Dashboard
+   - 8 analysis sections (harm, opportunity, topics, outlets, geographic, etc.)
+   - Chart.js visualizations
+   - Dark/light theme toggle
+   - CSV export functionality
+
+2. SQL Analysis Tables
+   - executive_summary
+   - outlet_accuracy_analysis
+   - temporal_distortion_trends
+   - weekly_new_articles_analysis
+
+ADVOCACY STRATEGY
+-----------------
+Immediate (Tier 1):
+  - Target top 3 outlets (Global, CityNews, CBC)
+  - Ontario-specific counter-narrative strategy
+  - Investigate 2026 spike (25.8% limiting)
+
+Short-Term (Tier 2):
+  - Amplify Social_Community stories
+  - Replicate 2025 breakthrough factors
+  - Journalist education programs
+
+Long-Term (Tier 3):
+  - Convert 8,080 neutral articles to empowering
+  - Study BC best practices (16.1% harm rate)
+  - Quarterly monitoring (target: 15% empowering / 15% limiting)
+
+TECHNICAL SPECS
+---------------
+Processing Time: 2-3 minutes (full pipeline)
+Data Plane:      DuckDB (in-memory analytics)
+Storage:         Snowflake (persistent)
+Automation:      Weekly scheduled runs
+
+CONTACT
+-------
+Owner:     suha@smartdiversity.ca
+Workspace: Suha (suha/dev branch)
+Instance:  Suha Islaih's Instance
+
+VERSION
+-------
+v2.0 (Feb 2026) - CLEAN_LONGEVITY_TABLE migration (12K articles)
+
+================================================================================

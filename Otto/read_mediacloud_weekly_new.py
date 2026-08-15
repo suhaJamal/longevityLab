@@ -8,7 +8,7 @@ from ascend.common.events import log
 from ascend.resources import read, test, RetryStrategy
 
 # Media Cloud API configuration
-MEDIACLOUD_API_KEY = "9e047cbfc9e1cd397857c21eb52c78902fc5f181"
+MEDIACLOUD_API_KEY = "..."
 MEDIACLOUD_BASE_URL = "https://api.mediacloud.org/api/v2/stories_public/list"
 
 # Search phrases by narrative category

@@ -12,7 +12,7 @@ print("MEDIA CLOUD API CONNECTION TEST")
 print("="*80)
 
 # Configuration
-API_KEY = '9e047cbfc9e1cd397857c21eb52c78902fc5f181'
+API_KEY = '...'
 print(f"\nAPI Key: {API_KEY[:20]}...")
 
 # Test dates

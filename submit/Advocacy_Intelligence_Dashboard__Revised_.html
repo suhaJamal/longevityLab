@@ -1,0 +1,1042 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advocacy Intelligence Dashboard - Longevity Narratives 2023-2026</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-primary: #ffffff;
+            --bg-secondary: #f8f9fa;
+            --bg-card: #ffffff;
+            --text-primary: #212529;
+            --text-secondary: #6c757d;
+            --border-color: #dee2e6;
+            --accent-primary: #0d6efd;
+            --accent-success: #198754;
+            --accent-warning: #ffc107;
+            --accent-danger: #dc3545;
+            --shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        body.dark-mode {
+            --bg-primary: #1a1a1a;
+            --bg-secondary: #2d2d2d;
+            --bg-card: #242424;
+            --text-primary: #e9ecef;
+            --text-secondary: #adb5bd;
+            --border-color: #495057;
+            --shadow: 0 2px 8px rgba(0,0,0,0.3);
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+
+        .header {
+            background: var(--bg-card);
+            border-bottom: 2px solid var(--border-color);
+            padding: 1.5rem 2rem;
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header h1 {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .header-subtitle {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            margin-top: 0.25rem;
+        }
+
+        .header-controls {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .btn {
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+
+        .btn-primary {
+            background: var(--accent-primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            opacity: 0.9;
+            transform: translateY(-1px);
+        }
+
+        .btn-secondary {
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            border: 1px solid var(--border-color);
+        }
+
+        .btn-secondary:hover {
+            background: var(--border-color);
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            background: var(--bg-card);
+            padding: 1rem;
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+        }
+
+        .tab-btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            background: transparent;
+            color: var(--text-secondary);
+            cursor: pointer;
+            border-radius: 6px;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+
+        .tab-btn:hover {
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+        }
+
+        .tab-btn.active {
+            background: var(--accent-primary);
+            color: white;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .section {
+            background: var(--bg-card);
+            border-radius: 8px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow);
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+        }
+
+        .section-subtitle {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+        }
+
+        .metric-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .metric-card {
+            background: var(--bg-secondary);
+            padding: 1.5rem;
+            border-radius: 8px;
+            border-left: 4px solid var(--accent-primary);
+        }
+
+        .metric-card.danger {
+            border-left-color: var(--accent-danger);
+        }
+
+        .metric-card.success {
+            border-left-color: var(--accent-success);
+        }
+
+        .metric-card.warning {
+            border-left-color: var(--accent-warning);
+        }
+
+        .metric-label {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 0.5rem;
+        }
+
+        .metric-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .chart-container {
+            position: relative;
+            height: 400px;
+            margin: 2rem 0;
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1.5rem;
+        }
+
+        .data-table th {
+            background: var(--bg-secondary);
+            padding: 1rem;
+            text-align: left;
+            font-weight: 600;
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        .data-table td {
+            padding: 1rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .data-table tr:hover {
+            background: var(--bg-secondary);
+        }
+
+        .insight-box {
+            background: var(--bg-secondary);
+            border-left: 4px solid var(--accent-primary);
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border-radius: 4px;
+        }
+
+        .insight-box h3 {
+            font-size: 1.1rem;
+            margin-bottom: 0.75rem;
+            color: var(--text-primary);
+        }
+
+        .insight-box p {
+            color: var(--text-secondary);
+            line-height: 1.8;
+        }
+
+        .action-box {
+            background: linear-gradient(135deg, var(--accent-primary) 0%, #0a58ca 100%);
+            color: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-top: 1.5rem;
+        }
+
+        .action-box h3 {
+            font-size: 1.1rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .action-box ul {
+            margin-left: 1.5rem;
+            line-height: 1.8;
+        }
+
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .tabs {
+                flex-direction: column;
+            }
+
+            .metric-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .chart-container {
+                height: 300px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="header-content">
+            <div>
+                <h1>🎯 Advocacy Intelligence Dashboard</h1>
+                <div class="header-subtitle">Longevity Narratives Analysis • 2023-2026 • 11,929 Articles</div>
+            </div>
+            <div class="header-controls">
+                <button class="btn btn-secondary" onclick="toggleTheme()">🌓 Toggle Theme</button>
+                <button class="btn btn-primary" onclick="exportData()">📥 Export CSV</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="tabs">
+            <button class="tab-btn active" onclick="showTab('overview')">📊 Overview</button>
+            <button class="tab-btn" onclick="showTab('harm')">⚠️ Harm Assessment</button>
+            <button class="tab-btn" onclick="showTab('opportunity')">✨ Opportunity</button>
+            <button class="tab-btn" onclick="showTab('topics')">📚 Topics</button>
+            <button class="tab-btn" onclick="showTab('outlets')">📰 Outlets</button>
+            <button class="tab-btn" onclick="showTab('geographic')">🗺️ Geographic</button>
+            <button class="tab-btn" onclick="showTab('trends')">📈 Trends</button>
+            <button class="tab-btn" onclick="showTab('narrative')">🎭 Narrative Landscape</button>
+        </div>
+
+        <!-- Overview Tab -->
+        <div id="overview" class="tab-content active">
+            <div class="section">
+                <h2 class="section-title">Executive Summary</h2>
+                <p class="section-subtitle">Key findings from 11,929 Canadian longevity articles (2023-2026)</p>
+                
+                <div class="metric-grid">
+                    <div class="metric-card danger">
+                        <div class="metric-label">Limiting Coverage</div>
+                        <div class="metric-value">18.4%</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-label">Neutral Coverage</div>
+                        <div class="metric-value">67.7%</div>
+                    </div>
+                    <div class="metric-card success">
+                        <div class="metric-label">Empowering Coverage</div>
+                        <div class="metric-value">13.9%</div>
+                    </div>
+                    <div class="metric-card warning">
+                        <div class="metric-label">Total Articles</div>
+                        <div class="metric-value">11,929</div>
+                    </div>
+                </div>
+
+                <div class="chart-container">
+                    <canvas id="overviewChart"></canvas>
+                </div>
+
+                <div class="insight-box">
+                    <h3>🎯 Key Finding</h3>
+                    <p>Nearly 1 in 5 articles (18.4%) frame aging through a limiting lens, emphasizing crisis, burden, and decline. This creates a significant opportunity for counter-narrative advocacy.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Harm Assessment Tab -->
+        <div id="harm" class="tab-content">
+            <div class="section">
+                <h2 class="section-title">⚠️ Harm Assessment</h2>
+                <p class="section-subtitle">Identifying limiting narratives that require intervention</p>
+                
+                <div class="metric-grid">
+                    <div class="metric-card danger">
+                        <div class="metric-label">Limiting Articles</div>
+                        <div class="metric-value">2,196</div>
+                    </div>
+                    <div class="metric-card danger">
+                        <div class="metric-label">Harm Rate</div>
+                        <div class="metric-value">18.4%</div>
+                    </div>
+                    <div class="metric-card warning">
+                        <div class="metric-label">Worst Outlet</div>
+                        <div class="metric-value">26.0%</div>
+                    </div>
+                    <div class="metric-card warning">
+                        <div class="metric-label">2026 Spike</div>
+                        <div class="metric-value">25.8%</div>
+                    </div>
+                </div>
+
+                <div class="insight-box">
+                    <h3>📊 Evidence</h3>
+                    <p><strong>Volume:</strong> 2,196 articles (18.4%) use limiting frames<br>
+                    <strong>Worst Offenders:</strong> globalnews.ca (26.0%), citynews.ca (25.9%), cbc.ca (25.9%)<br>
+                    <strong>Geographic Concentration:</strong> Ontario has 1,266 limiting articles (19.5% rate)<br>
+                    <strong>Temporal Pattern:</strong> 2026 shows alarming spike to 25.8% limiting coverage</p>
+                </div>
+
+                <div class="action-box">
+                    <h3>🎯 Recommended Actions</h3>
+                    <ul>
+                        <li>Launch targeted media literacy campaign with top 3 outlets (Global, CityNews, CBC)</li>
+                        <li>Develop Ontario-specific counter-narrative strategy (highest volume of harm)</li>
+                        <li>Investigate 2026 spike drivers and prepare rapid response protocols</li>
+                        <li>Create journalist education program on balanced aging coverage</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Opportunity Assessment Tab -->
+        <div id="opportunity" class="tab-content">
+            <div class="section">
+                <h2 class="section-title">✨ Opportunity Assessment</h2>
+                <p class="section-subtitle">Identifying empowering narratives and amplification opportunities</p>
+                
+                <div class="metric-grid">
+                    <div class="metric-card success">
+                        <div class="metric-label">Empowering Articles</div>
+                        <div class="metric-value">1,653</div>
+                    </div>
+                    <div class="metric-card success">
+                        <div class="metric-label">Opportunity Rate</div>
+                        <div class="metric-value">13.9%</div>
+                    </div>
+                    <div class="metric-card success">
+                        <div class="metric-label">Best Topic</div>
+                        <div class="metric-value">27.7%</div>
+                    </div>
+                    <div class="metric-card success">
+                        <div class="metric-label">2025 Peak</div>
+                        <div class="metric-value">17.3%</div>
+                    </div>
+                </div>
+
+                <div class="insight-box">
+                    <h3>📊 Evidence</h3>
+                    <p><strong>Volume:</strong> 1,653 articles (13.9%) use empowering frames<br>
+                    <strong>Best Topic:</strong> Social_Community (27.7% empowering) - 578 positive articles<br>
+                    <strong>Geographic Leader:</strong> Quebec (24.7% empowering rate, though small sample)<br>
+                    <strong>Temporal Breakthrough:</strong> 2025 reached 17.3% empowering (up from 10.0% in 2023)</p>
+                </div>
+
+                <div class="action-box">
+                    <h3>🎯 Recommended Actions</h3>
+                    <ul>
+                        <li>Amplify Social_Community stories through social media campaigns</li>
+                        <li>Study Quebec's media ecosystem for replicable best practices</li>
+                        <li>Analyze 2025 breakthrough factors and replicate successful strategies</li>
+                        <li>Create "Empowering Aging" awards program for journalists</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Topics Tab -->
+        <div id="topics" class="tab-content">
+            <div class="section">
+                <h2 class="section-title">📚 Topic Analysis</h2>
+                <p class="section-subtitle">Empowering narrative opportunities by topic category</p>
+                
+                <div class="chart-container">
+                    <canvas id="topicsChart"></canvas>
+                </div>
+
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Topic</th>
+                            <th>Total Articles</th>
+                            <th>Empowering Count</th>
+                            <th>Empowering %</th>
+                        </tr>
+                    </thead>
+                    <tbody id="topicsTableBody"></tbody>
+                </table>
+
+                <div class="insight-box">
+                    <h3>🎯 Key Finding</h3>
+                    <p>Social_Community topics show the highest empowering rate (27.7%), suggesting that community-focused stories naturally lend themselves to positive aging narratives. Healthcare_Medical topics show the lowest rate (10.0%), indicating a need for reframing medical coverage.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Outlets Tab -->
+        <div id="outlets" class="tab-content">
+            <div class="section">
+                <h2 class="section-title">📰 Outlet Targeting</h2>
+                <p class="section-subtitle">Media outlets ranked by limiting narrative prevalence</p>
+                
+                <div class="chart-container">
+                    <canvas id="outletsChart"></canvas>
+                </div>
+
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Outlet</th>
+                            <th>Total Articles</th>
+                            <th>Limiting Count</th>
+                            <th>Limiting %</th>
+                        </tr>
+                    </thead>
+                    <tbody id="outletsTableBody"></tbody>
+                </table>
+
+                <div class="action-box">
+                    <h3>🎯 Priority Engagement Strategy</h3>
+                    <ul>
+                        <li><strong>Tier 1 (Immediate):</strong> globalnews.ca, citynews.ca, cbc.ca - Schedule editorial meetings</li>
+                        <li><strong>Tier 2 (Short-term):</strong> timminstoday.com, mountainviewtoday.ca - Provide story templates</li>
+                        <li><strong>Tier 3 (Long-term):</strong> thestar.com, townandcountrytoday.com - Build journalist relationships</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Geographic Tab -->
+        <div id="geographic" class="tab-content">
+            <div class="section">
+                <h2 class="section-title">🗺️ Geographic Targeting</h2>
+                <p class="section-subtitle">Provincial analysis of limiting narrative prevalence</p>
+                
+                <div class="chart-container">
+                    <canvas id="geographicChart"></canvas>
+                </div>
+
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Province</th>
+                            <th>Total Articles</th>
+                            <th>Limiting Count</th>
+                            <th>Limiting %</th>
+                        </tr>
+                    </thead>
+                    <tbody id="geographicTableBody"></tbody>
+                </table>
+
+                <div class="insight-box">
+                    <h3>🎯 Key Finding</h3>
+                    <p><strong>Ontario:</strong> Highest volume (6,506 articles) and total harm (1,266 limiting articles). Priority region for intervention.<br>
+                    <strong>British Columbia:</strong> Lowest harm rate (16.1%) despite high volume (3,192 articles). Study for best practices.<br>
+                    <strong>Quebec:</strong> Small sample (73 articles) but concerning 24.7% limiting rate.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Trends Tab -->
+        <div id="trends" class="tab-content">
+            <div class="section">
+                <h2 class="section-title">📈 Temporal Trends</h2>
+                <p class="section-subtitle">Year-over-year narrative evolution (2023-2026)</p>
+                
+                <div class="chart-container">
+                    <canvas id="trendsChart"></canvas>
+                </div>
+
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Year</th>
+                            <th>Total Articles</th>
+                            <th>Limiting %</th>
+                            <th>Neutral %</th>
+                            <th>Empowering %</th>
+                        </tr>
+                    </thead>
+                    <tbody id="trendsTableBody"></tbody>
+                </table>
+
+                <div class="insight-box">
+                    <h3>🎯 Key Finding</h3>
+                    <p><strong>2025 Breakthrough:</strong> Empowering coverage peaked at 17.3% (up from 10.0% in 2023), while limiting dropped to 15.7%. This represents significant progress.<br>
+                    <strong>2026 Regression:</strong> Alarming spike to 25.8% limiting coverage in early 2026 data. Requires immediate investigation and response.</p>
+                </div>
+
+                <div class="action-box">
+                    <h3>🎯 Recommended Actions</h3>
+                    <ul>
+                        <li>Analyze 2025 success factors (policy changes, campaigns, events) for replication</li>
+                        <li>Investigate 2026 spike triggers (healthcare crisis, policy debates, economic factors)</li>
+                        <li>Develop rapid response protocols for future narrative regressions</li>
+                        <li>Set quarterly monitoring benchmarks to track progress</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Narrative Landscape Tab -->
+        <div id="narrative" class="tab-content">
+            <div class="section">
+                <h2 class="section-title">🎭 Narrative Landscape</h2>
+                <p class="section-subtitle">Comprehensive view of aging narratives in Canadian media</p>
+                
+                <div class="metric-grid">
+                    <div class="metric-card danger">
+                        <div class="metric-label">Limiting Frame</div>
+                        <div class="metric-value">18.4%</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-label">Neutral Frame</div>
+                        <div class="metric-value">67.7%</div>
+                    </div>
+                    <div class="metric-card success">
+                        <div class="metric-label">Empowering Frame</div>
+                        <div class="metric-value">13.9%</div>
+                    </div>
+                    <div class="metric-card warning">
+                        <div class="metric-label">Conversion Opportunity</div>
+                        <div class="metric-value">8,080</div>
+                    </div>
+                </div>
+
+                <div class="insight-box">
+                    <h3>📊 Narrative Distribution</h3>
+                    <p><strong>Limiting (18.4%):</strong> Crisis framing, burden narratives, decline focus<br>
+                    <strong>Neutral (67.7%):</strong> Factual reporting, policy coverage, demographic data<br>
+                    <strong>Empowering (13.9%):</strong> Active aging, contribution stories, innovation focus</p>
+                </div>
+
+                <div class="insight-box">
+                    <h3>🎯 Strategic Opportunity</h3>
+                    <p>The 8,080 neutral articles represent a massive conversion opportunity. These stories are currently framed factually but could be reframed with empowering angles. Even converting 10% would add 808 empowering articles, nearly doubling positive coverage.</p>
+                </div>
+
+                <div class="action-box">
+                    <h3>🎯 Comprehensive Strategy</h3>
+                    <ul>
+                        <li><strong>Reduce Harm:</strong> Target top 3 outlets (Global, CityNews, CBC) with media literacy programs</li>
+                        <li><strong>Amplify Good:</strong> Promote Social_Community stories and 2025 success models</li>
+                        <li><strong>Convert Neutral:</strong> Provide journalists with empowering story angles and sources</li>
+                        <li><strong>Monitor Progress:</strong> Quarterly tracking with 15% empowering / 15% limiting targets</li>
+                        <li><strong>Geographic Focus:</strong> Prioritize Ontario (volume) and learn from BC (low harm rate)</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Data
+        const data = {
+            sentiment: [
+                {label: 'Neutral', value: 8080, percentage: 67.7},
+                {label: 'Limiting', value: 2196, percentage: 18.4},
+                {label: 'Empowering', value: 1653, percentage: 13.9}
+            ],
+            outlets: [
+                {name: 'globalnews.ca', total: 327, limiting: 85, pct: 26.0},
+                {name: 'citynews.ca', total: 625, limiting: 162, pct: 25.9},
+                {name: 'cbc.ca', total: 266, limiting: 69, pct: 25.9},
+                {name: 'timminstoday.com', total: 163, limiting: 42, pct: 25.8},
+                {name: 'mountainviewtoday.ca', total: 151, limiting: 37, pct: 24.5},
+                {name: 'thestar.com', total: 569, limiting: 133, pct: 23.4},
+                {name: 'townandcountrytoday.com', total: 355, limiting: 82, pct: 23.1},
+                {name: 'sootoday.com', total: 188, limiting: 43, pct: 22.9},
+                {name: 'castanet.net', total: 158, limiting: 36, pct: 22.8}
+            ],
+            geographic: [
+                {province: 'Ontario', total: 6506, limiting: 1266, pct: 19.5},
+                {province: 'Alberta', total: 2124, limiting: 395, pct: 18.6},
+                {province: 'British Columbia', total: 3192, limiting: 514, pct: 16.1},
+                {province: 'Quebec', total: 73, limiting: 18, pct: 24.7},
+                {province: 'Other', total: 34, limiting: 2, pct: 5.9}
+            ],
+            topics: [
+                {topic: 'Social_Community', total: 2085, empowering: 578, pct: 27.7},
+                {topic: 'SeniorLiving_Care', total: 798, empowering: 203, pct: 25.4},
+                {topic: 'Family_Caregiving', total: 216, empowering: 39, pct: 18.1},
+                {topic: 'Longevity_Research', total: 273, empowering: 43, pct: 15.8},
+                {topic: 'Housing_Accessibility', total: 507, empowering: 77, pct: 15.2},
+                {topic: 'Retirement_Finances', total: 318, empowering: 48, pct: 15.1},
+                {topic: 'Technology_Innovation', total: 293, empowering: 35, pct: 11.9},
+                {topic: 'Ageism_Rights', total: 518, empowering: 53, pct: 10.2},
+                {topic: 'Healthcare_Medical', total: 2255, empowering: 225, pct: 10.0},
+                {topic: 'Unclassified', total: 2422, empowering: 242, pct: 10.0},
+                {topic: 'Policy_Government', total: 2244, empowering: 110, pct: 4.9}
+            ],
+            trends: [
+                {year: 2023, total: 3490, limiting: 626, empowering: 348, neutral: 2516, limiting_pct: 17.9, empowering_pct: 10.0, neutral_pct: 72.1},
+                {year: 2024, total: 3425, limiting: 698, empowering: 454, neutral: 2273, limiting_pct: 20.4, empowering_pct: 13.3, neutral_pct: 66.4},
+                {year: 2025, total: 4166, limiting: 653, empowering: 722, neutral: 2791, limiting_pct: 15.7, empowering_pct: 17.3, neutral_pct: 67.0},
+                {year: 2026, total: 848, limiting: 219, empowering: 129, neutral: 500, limiting_pct: 25.8, empowering_pct: 15.2, neutral_pct: 59.0}
+            ]
+        };
+
+        // Chart instances
+        let charts = {};
+
+        // Initialize charts
+        function initCharts() {
+            // Overview Chart
+            const overviewCtx = document.getElementById('overviewChart').getContext('2d');
+            charts.overview = new Chart(overviewCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: data.sentiment.map(d => d.label),
+                    datasets: [{
+                        data: data.sentiment.map(d => d.value),
+                        backgroundColor: ['#6c757d', '#dc3545', '#198754'],
+                        borderWidth: 2,
+                        borderColor: '#ffffff'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                padding: 20,
+                                font: {size: 14}
+                            }
+                        },
+                        title: {
+                            display: true,
+                            text: 'Sentiment Distribution (11,929 Articles)',
+                            font: {size: 16, weight: 'bold'}
+                        }
+                    }
+                }
+            });
+
+            // Topics Chart
+            const topicsCtx = document.getElementById('topicsChart').getContext('2d');
+            charts.topics = new Chart(topicsCtx, {
+                type: 'bar',
+                data: {
+                    labels: data.topics.map(d => d.topic),
+                    datasets: [{
+                        label: 'Empowering %',
+                        data: data.topics.map(d => d.pct),
+                        backgroundColor: '#198754',
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    indexAxis: 'y',
+                    plugins: {
+                        legend: {display: false},
+                        title: {
+                            display: true,
+                            text: 'Empowering Coverage by Topic',
+                            font: {size: 16, weight: 'bold'}
+                        }
+                    },
+                    scales: {
+                        x: {
+                            beginAtZero: true,
+                            max: 30,
+                            title: {display: true, text: 'Empowering %'}
+                        }
+                    }
+                }
+            });
+
+            // Outlets Chart
+            const outletsCtx = document.getElementById('outletsChart').getContext('2d');
+            charts.outlets = new Chart(outletsCtx, {
+                type: 'bar',
+                data: {
+                    labels: data.outlets.map(d => d.name),
+                    datasets: [{
+                        label: 'Limiting %',
+                        data: data.outlets.map(d => d.pct),
+                        backgroundColor: '#dc3545',
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    indexAxis: 'y',
+                    plugins: {
+                        legend: {display: false},
+                        title: {
+                            display: true,
+                            text: 'Limiting Coverage by Outlet (100+ articles)',
+                            font: {size: 16, weight: 'bold'}
+                        }
+                    },
+                    scales: {
+                        x: {
+                            beginAtZero: true,
+                            max: 30,
+                            title: {display: true, text: 'Limiting %'}
+                        }
+                    }
+                }
+            });
+
+            // Geographic Chart
+            const geoCtx = document.getElementById('geographicChart').getContext('2d');
+            charts.geographic = new Chart(geoCtx, {
+                type: 'bar',
+                data: {
+                    labels: data.geographic.map(d => d.province),
+                    datasets: [
+                        {
+                            label: 'Total Articles',
+                            data: data.geographic.map(d => d.total),
+                            backgroundColor: '#0d6efd',
+                            yAxisID: 'y'
+                        },
+                        {
+                            label: 'Limiting %',
+                            data: data.geographic.map(d => d.pct),
+                            backgroundColor: '#dc3545',
+                            yAxisID: 'y1'
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: 'Geographic Distribution: Volume vs. Harm Rate',
+                            font: {size: 16, weight: 'bold'}
+                        }
+                    },
+                    scales: {
+                        y: {
+                            type: 'linear',
+                            position: 'left',
+                            title: {display: true, text: 'Total Articles'}
+                        },
+                        y1: {
+                            type: 'linear',
+                            position: 'right',
+                            title: {display: true, text: 'Limiting %'},
+                            grid: {drawOnChartArea: false},
+                            max: 30
+                        }
+                    }
+                }
+            });
+
+            // Trends Chart
+            const trendsCtx = document.getElementById('trendsChart').getContext('2d');
+            charts.trends = new Chart(trendsCtx, {
+                type: 'line',
+                data: {
+                    labels: data.trends.map(d => d.year),
+                    datasets: [
+                        {
+                            label: 'Limiting %',
+                            data: data.trends.map(d => d.limiting_pct),
+                            borderColor: '#dc3545',
+                            backgroundColor: 'rgba(220, 53, 69, 0.1)',
+                            fill: true,
+                            tension: 0.4
+                        },
+                        {
+                            label: 'Empowering %',
+                            data: data.trends.map(d => d.empowering_pct),
+                            borderColor: '#198754',
+                            backgroundColor: 'rgba(25, 135, 84, 0.1)',
+                            fill: true,
+                            tension: 0.4
+                        },
+                        {
+                            label: 'Neutral %',
+                            data: data.trends.map(d => d.neutral_pct),
+                            borderColor: '#6c757d',
+                            backgroundColor: 'rgba(108, 117, 125, 0.1)',
+                            fill: true,
+                            tension: 0.4
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: 'Temporal Trends: Sentiment Evolution (2023-2026)',
+                            font: {size: 16, weight: 'bold'}
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 100,
+                            title: {display: true, text: 'Percentage'}
+                        }
+                    }
+                }
+            });
+
+            // Populate tables
+            populateTables();
+        }
+
+        function populateTables() {
+            // Topics table
+            const topicsBody = document.getElementById('topicsTableBody');
+            data.topics.forEach(row => {
+                topicsBody.innerHTML += `
+                    <tr>
+                        <td>${row.topic}</td>
+                        <td>${row.total.toLocaleString()}</td>
+                        <td>${row.empowering}</td>
+                        <td><strong>${row.pct}%</strong></td>
+                    </tr>
+                `;
+            });
+
+            // Outlets table
+            const outletsBody = document.getElementById('outletsTableBody');
+            data.outlets.forEach(row => {
+                outletsBody.innerHTML += `
+                    <tr>
+                        <td>${row.name}</td>
+                        <td>${row.total.toLocaleString()}</td>
+                        <td>${row.limiting}</td>
+                        <td><strong>${row.pct}%</strong></td>
+                    </tr>
+                `;
+            });
+
+            // Geographic table
+            const geoBody = document.getElementById('geographicTableBody');
+            data.geographic.forEach(row => {
+                geoBody.innerHTML += `
+                    <tr>
+                        <td>${row.province}</td>
+                        <td>${row.total.toLocaleString()}</td>
+                        <td>${row.limiting}</td>
+                        <td><strong>${row.pct}%</strong></td>
+                    </tr>
+                `;
+            });
+
+            // Trends table
+            const trendsBody = document.getElementById('trendsTableBody');
+            data.trends.forEach(row => {
+                trendsBody.innerHTML += `
+                    <tr>
+                        <td>${row.year}</td>
+                        <td>${row.total.toLocaleString()}</td>
+                        <td><strong>${row.limiting_pct}%</strong></td>
+                        <td>${row.neutral_pct}%</td>
+                        <td><strong>${row.empowering_pct}%</strong></td>
+                    </tr>
+                `;
+            });
+        }
+
+        // Tab switching
+        function showTab(tabName) {
+            // Hide all tabs
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+
+            // Show selected tab
+            document.getElementById(tabName).classList.add('active');
+            event.target.classList.add('active');
+        }
+
+        // Theme toggle
+        function toggleTheme() {
+            document.body.classList.toggle('dark-mode');
+            
+            // Update chart colors
+            const isDark = document.body.classList.contains('dark-mode');
+            const textColor = isDark ? '#e9ecef' : '#212529';
+            const gridColor = isDark ? '#495057' : '#dee2e6';
+            
+            Object.values(charts).forEach(chart => {
+                chart.options.plugins.legend.labels.color = textColor;
+                chart.options.plugins.title.color = textColor;
+                if (chart.options.scales) {
+                    Object.values(chart.options.scales).forEach(scale => {
+                        if (scale.ticks) scale.ticks.color = textColor;
+                        if (scale.title) scale.title.color = textColor;
+                        if (scale.grid) scale.grid.color = gridColor;
+                    });
+                }
+                chart.update();
+            });
+        }
+
+        // Export to CSV
+        function exportData() {
+            let csv = 'Advocacy Intelligence Dashboard - Export\n\n';
+            
+            csv += 'SENTIMENT DISTRIBUTION\n';
+            csv += 'Label,Count,Percentage\n';
+            data.sentiment.forEach(row => {
+                csv += `${row.label},${row.value},${row.percentage}%\n`;
+            });
+            
+            csv += '\nOUTLET TARGETING\n';
+            csv += 'Outlet,Total Articles,Limiting Count,Limiting %\n';
+            data.outlets.forEach(row => {
+                csv += `${row.name},${row.total},${row.limiting},${row.pct}%\n`;
+            });
+            
+            csv += '\nGEOGRAPHIC TARGETING\n';
+            csv += 'Province,Total Articles,Limiting Count,Limiting %\n';
+            data.geographic.forEach(row => {
+                csv += `${row.province},${row.total},${row.limiting},${row.pct}%\n`;
+            });
+            
+            csv += '\nTOPIC ANALYSIS\n';
+            csv += 'Topic,Total Articles,Empowering Count,Empowering %\n';
+            data.topics.forEach(row => {
+                csv += `${row.topic},${row.total},${row.empowering},${row.pct}%\n`;
+            });
+            
+            csv += '\nTEMPORAL TRENDS\n';
+            csv += 'Year,Total Articles,Limiting %,Neutral %,Empowering %\n';
+            data.trends.forEach(row => {
+                csv += `${row.year},${row.total},${row.limiting_pct}%,${row.neutral_pct}%,${row.empowering_pct}%\n`;
+            });
+            
+            const blob = new Blob([csv], { type: 'text/csv' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'advocacy_intelligence_dashboard.csv';
+            a.click();
+            window.URL.revokeObjectURL(url);
+        }
+
+        // Initialize on page load
+        window.addEventListener('load', initCharts);
+    </script>
+</body>
+</html>

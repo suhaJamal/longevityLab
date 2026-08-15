@@ -15,7 +15,7 @@ import time
 # CONFIGURATION
 # ============================================================================
 
-API_KEY = '9e047cbfc9e1cd397857c21eb52c78902fc5f181'
+API_KEY = '...'
 YEAR = 2023
 START_DATE = date(2023, 1, 1)
 END_DATE = date(2023, 12, 31)

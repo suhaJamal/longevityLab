@@ -1,0 +1,109 @@
+graph TB
+    subgraph "Data Sources"
+        SF[("Snowflake<br/>PUBLIC.CLEAN_LONGEVITY_TABLE<br/>11,929 articles")]
+        MC[("MediaCloud API<br/>Weekly Updates")]
+    end
+
+    subgraph "Ascend longevityLab Flow"
+        subgraph "Ingestion Layer"
+            R1[read_longevity_all_data<br/>YAML Read Component]
+            R2[read_mediacloud_weekly_new<br/>Python Read Component]
+        end
+
+        subgraph "Processing Layer - DuckDB Data Plane"
+            T1[sentiment_analysis_longevity_data<br/>Python Transform<br/>Otto's Keyword Classifier]
+            T2[cleaned_longevity_data<br/>Python Transform<br/>Data Normalization]
+            T3[sentiment_analysis_mediacloud_data<br/>Python Transform]
+            T4[cleaned_mediacloud_data<br/>Python Transform]
+        end
+
+        subgraph "Analysis Layer - SQL"
+            A1[executive_summary<br/>SQL Transform<br/>KPIs & Metrics]
+            A2[outlet_accuracy_analysis<br/>SQL Transform<br/>Media Performance]
+            A3[temporal_distortion_trends<br/>SQL Transform<br/>Year-over-Year Trends]
+            A4[weekly_new_articles_analysis<br/>SQL Transform<br/>Weekly Metrics]
+        end
+
+        subgraph "Output Layer"
+            W1[write_new_articles_to_snowflake<br/>YAML Write Component]
+        end
+    end
+
+    subgraph "Outputs & Artifacts"
+        D1[Interactive HTML Dashboard<br/>8 Analysis Sections<br/>Chart.js Visualizations]
+        D2[SQL Analysis Tables<br/>executive_summary<br/>outlet_accuracy_analysis<br/>temporal_distortion_trends]
+        D3[Advocacy Intelligence Reports<br/>Harm Assessment<br/>Opportunity Analysis]
+    end
+
+    subgraph "Automation"
+        AUTO1[weekly_mediacloud_update<br/>Scheduled: Every Monday]
+        AUTO2[weekly_pipeline_summary<br/>Scheduled: Every Friday]
+    end
+
+    subgraph "Connections"
+        C1[snowflake_aging_narratives<br/>Source Connection]
+        C2[data_plane_duckdb<br/>Processing Engine]
+    end
+
+    %% Data Flow
+    SF -->|Read| R1
+    MC -->|API Call| R2
+    
+    R1 --> T1
+    T1 --> T2
+    R2 --> T3
+    T3 --> T4
+    
+    T2 --> A1
+    T2 --> A2
+    T2 --> A3
+    T4 --> A4
+    
+    A1 --> W1
+    A2 --> W1
+    A3 --> W1
+    A4 --> W1
+    
+    W1 -->|Write Back| SF
+    
+    A1 -.->|Query Results| D1
+    A2 -.->|Query Results| D1
+    A3 -.->|Query Results| D1
+    A1 --> D2
+    A2 --> D2
+    A3 --> D2
+    
+    D1 -.-> D3
+    D2 -.-> D3
+    
+    %% Automation Triggers
+    AUTO1 -.->|Trigger| R2
+    AUTO2 -.->|Trigger| A1
+    
+    %% Connection Usage
+    C1 -.->|Used by| R1
+    C1 -.->|Used by| W1
+    C2 -.->|Used by| T1
+    C2 -.->|Used by| T2
+    C2 -.->|Used by| A1
+    C2 -.->|Used by| A2
+    C2 -.->|Used by| A3
+
+    %% Styling
+    classDef source fill:#e1f5ff,stroke:#01579b,stroke-width:2px
+    classDef read fill:#fff3e0,stroke:#e65100,stroke-width:2px
+    classDef transform fill:#f3e5f5,stroke:#4a148c,stroke-width:2px
+    classDef analysis fill:#e8f5e9,stroke:#1b5e20,stroke-width:2px
+    classDef output fill:#fce4ec,stroke:#880e4f,stroke-width:2px
+    classDef artifact fill:#fff9c4,stroke:#f57f17,stroke-width:2px
+    classDef automation fill:#e0f2f1,stroke:#004d40,stroke-width:2px
+    classDef connection fill:#efebe9,stroke:#3e2723,stroke-width:2px
+
+    class SF,MC source
+    class R1,R2 read
+    class T1,T2,T3,T4 transform
+    class A1,A2,A3,A4 analysis
+    class W1 output
+    class D1,D2,D3 artifact
+    class AUTO1,AUTO2 automation
+    class C1,C2 connection

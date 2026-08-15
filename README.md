@@ -15,7 +15,7 @@ pip install mediacloud pandas matplotlib seaborn
 
 ### Your API Key
 ```
-9e047cbfc9e1cd397857c21eb52c78902fc5f181
+...
 ```
 
 ### Run Complete Analysis
